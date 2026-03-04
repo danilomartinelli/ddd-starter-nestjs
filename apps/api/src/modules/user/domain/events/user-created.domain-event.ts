@@ -1,4 +1,4 @@
-import { DomainEvent, DomainEventProps } from '@libs/ddd';
+import { DomainEvent, DomainEventProps } from '@repo/core';
 
 export class UserCreatedDomainEvent extends DomainEvent {
   readonly email: string;

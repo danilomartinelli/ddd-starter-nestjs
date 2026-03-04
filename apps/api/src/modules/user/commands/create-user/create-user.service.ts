@@ -4,9 +4,8 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'oxide.ts';
 import { CreateUserCommand } from './create-user.command';
 import { UserAlreadyExistsError } from '@modules/user/domain/user.errors';
-import { AggregateID } from '@libs/ddd';
+import { AggregateID, ConflictException } from '@repo/core';
 import { UserEntity } from '@modules/user/domain/user.entity';
-import { ConflictException } from '@libs/exceptions';
 import { Inject } from '@nestjs/common';
 import { USER_REPOSITORY } from '../../user.di-tokens';
 

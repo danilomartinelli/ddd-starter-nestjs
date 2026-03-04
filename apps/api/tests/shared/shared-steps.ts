@@ -1,4 +1,4 @@
-import { ApiErrorResponse } from '@src/libs/api/api-error.response';
+import { ApiErrorResponse } from '@repo/core';
 import { TestContext } from '@tests/test-utils/TestContext';
 import { CreateUserTestContext } from '@tests/user/user-shared-steps';
 import { DefineStepFunction } from 'jest-cucumber';

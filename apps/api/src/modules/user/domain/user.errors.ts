@@ -1,4 +1,4 @@
-import { ExceptionBase } from '@libs/exceptions';
+import { ExceptionBase } from '@repo/core';
 
 export class UserAlreadyExistsError extends ExceptionBase {
   static readonly message = 'User already exists';

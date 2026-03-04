@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ResponseBase } from '@libs/api/response.base';
+import { ResponseBase } from '@repo/core';
 
 export class UserResponseDto extends ResponseBase {
   @ApiProperty({

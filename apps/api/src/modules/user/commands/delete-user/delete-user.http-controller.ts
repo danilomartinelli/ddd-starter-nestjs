@@ -9,9 +9,8 @@ import { routesV1 } from '@config/app.routes';
 import { CommandBus } from '@nestjs/cqrs';
 import { DeleteUserCommand } from './delete-user.service';
 import { match, Result } from 'oxide.ts';
-import { NotFoundException } from '@libs/exceptions';
+import { NotFoundException, ApiErrorResponse } from '@repo/core';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ApiErrorResponse } from '@src/libs/api/api-error.response';
 
 @Controller(routesV1.version)
 export class DeleteUserHttpController {

@@ -1,6 +1,4 @@
-import { ValueObject } from '@libs/ddd';
-import { Guard } from '@libs/guard';
-import { ArgumentOutOfRangeException } from '@libs/exceptions';
+import { ValueObject, Guard, ArgumentOutOfRangeException } from '@repo/core';
 
 /** Note:
  * Value Objects with multiple properties can contain

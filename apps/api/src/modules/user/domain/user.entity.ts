@@ -1,4 +1,4 @@
-import { AggregateRoot, AggregateID } from '@libs/ddd';
+import { AggregateRoot, AggregateID } from '@repo/core';
 import { UserCreatedDomainEvent } from './events/user-created.domain-event';
 import { Address, AddressProps } from './value-objects/address.value-object';
 import {

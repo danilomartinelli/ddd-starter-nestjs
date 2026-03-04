@@ -1,4 +1,4 @@
-import { Mapper } from '@libs/ddd';
+import { Mapper } from '@repo/core';
 import { UserModel, userSchema } from './database/user.repository';
 import { Address } from './domain/value-objects/address.value-object';
 import { UserEntity } from './domain/user.entity';

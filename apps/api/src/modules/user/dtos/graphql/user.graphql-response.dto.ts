@@ -1,4 +1,4 @@
-import { ResponseBase } from '@libs/api/response.base';
+import { ResponseBase } from '@repo/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()

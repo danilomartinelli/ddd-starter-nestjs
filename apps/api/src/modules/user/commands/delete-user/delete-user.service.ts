@@ -1,4 +1,4 @@
-import { NotFoundException } from '@libs/exceptions';
+import { NotFoundException } from '@repo/core';
 import { UserRepositoryPort } from '@modules/user/database/user.repository.port';
 import { Inject } from '@nestjs/common';
 import { CommandHandler } from '@nestjs/cqrs';

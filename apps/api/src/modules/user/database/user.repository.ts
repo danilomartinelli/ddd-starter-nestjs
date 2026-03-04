@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { UserMapper } from '../user.mapper';
 import { UserRoles } from '../domain/user.types';
 import { UserEntity } from '../domain/user.entity';
-import { SqlRepositoryBase } from '@src/libs/db/sql-repository.base';
+import { SqlRepositoryBase } from '@repo/core';
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
