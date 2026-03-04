@@ -1,0 +1,30 @@
+{
+  "name": "@repo/core",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "lint": "echo 'no lint configured yet'"
+  },
+  "dependencies": {
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/cqrs": "^9.0.1",
+    "@nestjs/swagger": "^6.1.2",
+    "class-validator": "^0.13.2",
+    "dotenv": "^16.0.2",
+    "nanoid": "^3.3.4",
+    "nestjs-request-context": "^2.1.0",
+    "nestjs-slonik": "^9.0.0",
+    "oxide.ts": "^1.0.5",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.2.0",
+    "slonik": "^31.2.4",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}

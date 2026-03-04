@@ -1,4 +1,4 @@
-import { RequestContextService } from '@libs/application/context/AppRequestContext';
+import { RequestContextService } from '../application/context/AppRequestContext';
 import { ArgumentNotProvidedException } from '../exceptions';
 import { Guard } from '../guard';
 import { randomUUID } from 'crypto';

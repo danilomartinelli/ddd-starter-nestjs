@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import { ArgumentNotProvidedException } from '../exceptions';
 import { Guard } from '../guard';
-import { RequestContextService } from '@libs/application/context/AppRequestContext';
+import { RequestContextService } from '../application/context/AppRequestContext';
 
 type DomainEventMetadata = {
   /** Timestamp when this domain event occurred */
