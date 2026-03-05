@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
-import { SlonikMigrator } from '@slonik/migrator';
+// TODO: Replace with Flyway migration tool (Task 13)
+// @slonik/migrator has been removed as part of slonik v48 upgrade
+
 import { createPool } from 'slonik';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
@@ -17,11 +19,8 @@ export async function getMigrator() {
     `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
   );
 
-  const migrator = new SlonikMigrator({
-    migrationsPath: path.resolve(__dirname, 'migrations'),
-    migrationTableName: 'migration',
-    slonik: pool,
-  } as any);
+  // Migrator functionality removed - will be replaced by Flyway (Task 13)
+  const migrator = null as any;
 
   return { pool, migrator };
 }

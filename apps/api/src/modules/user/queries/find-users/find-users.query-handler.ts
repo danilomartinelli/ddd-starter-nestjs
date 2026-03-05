@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { Ok, Result } from 'oxide.ts';
 import { PaginatedParams, PaginatedQueryBase, Paginated } from '@repo/core';
-import { InjectPool } from 'nestjs-slonik';
+import { InjectPool } from '@danilomartinelli/nestjs-slonik';
 import { DatabasePool, sql } from 'slonik';
 import { UserModel, userSchema } from '../../database/user.repository';
 
@@ -44,9 +44,9 @@ export class FindUsersQueryHandler {
          SELECT *
          FROM users
          WHERE
-           ${query.country ? sql`country = ${query.country}` : true} AND
-           ${query.street ? sql`street = ${query.street}` : true} AND
-           ${query.postalCode ? sql`"postalCode" = ${query.postalCode}` : true}
+           ${query.country ? sql.fragment`country = ${query.country}` : true} AND
+           ${query.street ? sql.fragment`street = ${query.street}` : true} AND
+           ${query.postalCode ? sql.fragment`"postalCode" = ${query.postalCode}` : true}
          LIMIT ${query.limit}
          OFFSET ${query.offset}`;
 

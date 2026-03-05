@@ -9,15 +9,14 @@ import {
   DatabasePool,
   DatabaseTransactionConnection,
   IdentifierSqlToken,
-  MixedRow,
   PrimitiveValueExpression,
   QueryResult,
   QueryResultRow,
+  QuerySqlToken,
   sql,
-  SqlSqlToken,
   UniqueIntegrityConstraintViolationError,
 } from 'slonik';
-import { ZodTypeAny, TypeOf, ZodObject } from 'zod';
+import { ZodObject } from 'zod';
 import { LoggerPort } from '../ports/logger.port';
 import { ObjectLiteral } from '../types';
 
@@ -78,7 +77,7 @@ export abstract class SqlRepositoryBase<
 
   async delete(entity: Aggregate): Promise<boolean> {
     entity.validate();
-    const query = sql`DELETE FROM ${sql.identifier([
+    const query = sql.unsafe`DELETE FROM ${sql.identifier([
       this.tableName,
     ])} WHERE id = ${entity.id}`;
 
@@ -112,7 +111,7 @@ export abstract class SqlRepositoryBase<
       if (error instanceof UniqueIntegrityConstraintViolationError) {
         this.logger.debug(
           `[${RequestContextService.getRequestId()}] ${
-            (error.originalError as any).detail
+            (error.cause as any)?.detail ?? error.message
           }`,
         );
         throw new ConflictException('Record already exists', error);
@@ -127,20 +126,10 @@ export abstract class SqlRepositoryBase<
    * and does some debug logging.
    * For read queries use `this.pool` directly
    */
-  protected async writeQuery<T>(
-    sql: SqlSqlToken<
-      T extends MixedRow ? T : Record<string, PrimitiveValueExpression>
-    >,
+  protected async writeQuery(
+    sql: QuerySqlToken,
     entity: Aggregate | Aggregate[],
-  ): Promise<
-    QueryResult<
-      T extends MixedRow
-        ? T extends ZodTypeAny
-          ? TypeOf<ZodTypeAny & MixedRow & T>
-          : T
-        : T
-    >
-  > {
+  ): Promise<QueryResult<QueryResultRow>> {
     const entities = Array.isArray(entity) ? entity : [entity];
     entities.forEach((entity) => entity.validate());
     const entityIds = entities.map((e) => e.id);
@@ -170,7 +159,7 @@ export abstract class SqlRepositoryBase<
    */
   protected generateInsertQuery(
     models: DbModel[],
-  ): SqlSqlToken<QueryResultRow> {
+  ): QuerySqlToken {
     // TODO: generate query from an entire array to insert multiple records at once
     const entries = Object.entries(models[0]);
     const values: any = [];
@@ -187,11 +176,11 @@ export abstract class SqlRepositoryBase<
       }
     });
 
-    const query = sql`INSERT INTO ${sql.identifier([
+    const query = sql.unsafe`INSERT INTO ${sql.identifier([
       this.tableName,
-    ])} (${sql.join(propertyNames, sql`, `)}) VALUES (${sql.join(
+    ])} (${sql.join(propertyNames, sql.fragment`, `)}) VALUES (${sql.join(
       values,
-      sql`, `,
+      sql.fragment`, `,
     )})`;
 
     const parsedQuery = query;
