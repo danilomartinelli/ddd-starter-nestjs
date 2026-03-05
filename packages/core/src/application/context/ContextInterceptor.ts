@@ -5,7 +5,7 @@ import {
   CallHandler,
 } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
-import { nanoid } from 'nanoid';
+import { randomUUID } from 'crypto';
 import { RequestContextService } from './AppRequestContext';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class ContextInterceptor implements NestInterceptor {
      * Setting an ID in the global context for each request.
      * This ID can be used as correlation id shown in logs
      */
-    const requestId = request?.body?.requestId ?? nanoid(6);
+    const requestId = request?.body?.requestId ?? randomUUID().slice(0, 6);
 
     RequestContextService.setRequestId(requestId);
 
