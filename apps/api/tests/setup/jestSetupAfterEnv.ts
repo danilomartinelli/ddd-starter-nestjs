@@ -2,7 +2,7 @@ import { Test, TestingModuleBuilder, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@src/app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { createPool, DatabasePool } from 'slonik';
-import * as request from 'supertest';
+import request from 'supertest';
 import { postgresConnectionUri } from '@src/configs/database.config';
 import { ValidationPipe } from '@nestjs/common';
 

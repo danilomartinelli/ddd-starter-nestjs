@@ -14,7 +14,13 @@
     "@repo/core/src/(.*)$": "<rootDir>/../../packages/core/src/$1",
     "@repo/core": "<rootDir>/../../packages/core/src/index.ts"
   },
+  "transformIgnorePatterns": [],
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
+    "^.+\\.(t|j)s$": ["ts-jest", {
+      "tsconfig": {
+        "allowJs": true,
+        "esModuleInterop": true
+      }
+    }]
   }
 }

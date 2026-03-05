@@ -8,6 +8,10 @@
     ".": {
       "require": "./dist/src/index.js",
       "types": "./dist/src/index.d.ts"
+    },
+    "./src/utils/dotenv": {
+      "require": "./dist/src/utils/dotenv.js",
+      "types": "./dist/src/utils/dotenv.d.ts"
     }
   },
   "files": [
