@@ -1,4 +1,4 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { QueryHandler } from '@nestjs/cqrs';
 import { Ok, Result } from 'oxide.ts';
 import { PaginatedParams, PaginatedQueryBase, Paginated } from '@repo/core';
 import { InjectPool } from 'nestjs-slonik';
@@ -21,7 +21,7 @@ export class FindUsersQuery extends PaginatedQueryBase {
 }
 
 @QueryHandler(FindUsersQuery)
-export class FindUsersQueryHandler implements IQueryHandler {
+export class FindUsersQueryHandler {
   constructor(
     @InjectPool()
     private readonly pool: DatabasePool,

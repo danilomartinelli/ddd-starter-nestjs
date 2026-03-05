@@ -1,6 +1,6 @@
 import { UserRepositoryPort } from '@modules/user/database/user.repository.port';
 import { Address } from '@modules/user/domain/value-objects/address.value-object';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'oxide.ts';
 import { CreateUserCommand } from './create-user.command';
 import { UserAlreadyExistsError } from '@modules/user/domain/user.errors';
@@ -10,7 +10,7 @@ import { Inject } from '@nestjs/common';
 import { USER_REPOSITORY } from '../../user.di-tokens';
 
 @CommandHandler(CreateUserCommand)
-export class CreateUserService implements ICommandHandler {
+export class CreateUserService {
   constructor(
     @Inject(USER_REPOSITORY)
     protected readonly userRepo: UserRepositoryPort,
