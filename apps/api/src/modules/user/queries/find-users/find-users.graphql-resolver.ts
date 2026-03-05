@@ -22,7 +22,9 @@ export class FindUsersGraphqlResolver {
 
     const paginated = result.match(
       (data) => data,
-      (error) => { throw error; },
+      (error) => {
+        throw error;
+      },
     );
     const response = new UserPaginatedGraphqlResponseDto({
       ...paginated,

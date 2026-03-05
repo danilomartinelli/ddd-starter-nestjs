@@ -35,7 +35,9 @@ export class FindUsersHttpController {
 
     const paginated = result.match(
       (data) => data,
-      (error) => { throw error; },
+      (error) => {
+        throw error;
+      },
     );
 
     // Whitelisting returned properties

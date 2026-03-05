@@ -23,7 +23,9 @@ export class CreateUserGraphqlResolver {
 
     return result.match(
       (id) => new IdGqlResponse(id),
-      (error) => { throw error; },
+      (error) => {
+        throw error;
+      },
     );
   }
 }
