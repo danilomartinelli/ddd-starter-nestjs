@@ -4,13 +4,12 @@ import { Mapper } from '../ddd';
 import { RepositoryPort } from '../ddd';
 import { ConflictException } from '../exceptions';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import type { StandardSchemaV1 } from '@standard-schema/spec';
 import {
   DatabasePool,
   DatabaseTransactionConnection,
   IdentifierSqlToken,
-  PrimitiveValueExpression,
   QueryResult,
-  QueryResultRow,
   QuerySqlToken,
   sql,
   UniqueIntegrityConstraintViolationError,
@@ -125,10 +124,10 @@ export abstract class SqlRepositoryBase<
    * and does some debug logging.
    * For read queries use `this.pool` directly
    */
-  protected async writeQuery(
-    sql: QuerySqlToken,
+  protected async writeQuery<T extends StandardSchemaV1>(
+    query: QuerySqlToken<T>,
     entity: Aggregate | Aggregate[],
-  ): Promise<QueryResult<QueryResultRow>> {
+  ): Promise<QueryResult<StandardSchemaV1.InferOutput<T>>> {
     const entities = Array.isArray(entity) ? entity : [entity];
     entities.forEach((entity) => entity.validate());
     const entityIds = entities.map((e) => e.id);
@@ -139,7 +138,7 @@ export abstract class SqlRepositoryBase<
       } entities to "${this.tableName}" table: ${entityIds}`,
     );
 
-    const result = await this.pool.query(sql);
+    const result = await this.pool.query(query);
 
     await Promise.all(
       entities.map((entity) =>
