@@ -74,9 +74,6 @@ importers:
       nanoid:
         specifier: ^3.3.4
         version: 3.3.11
-      nestjs-console:
-        specifier: ^8.0.0
-        version: 8.0.0(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.16)
       nestjs-request-context:
         specifier: ^4.0.0
         version: 4.0.0(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))
@@ -2053,10 +2050,6 @@ packages:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
 
-  commander@8.3.0:
-    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
-    engines: {node: '>= 12'}
-
   comment-json@4.4.1:
     resolution: {integrity: sha512-r1To31BQD5060QdkC+Iheai7gHwoSZobzunqkf2/kQ6xIAfJyrKNAFUwdKvkK7Qgu7pVTKQEa7ok7Ed3ycAJgg==}
     engines: {node: '>= 6'}
@@ -3589,12 +3582,6 @@ packages:
 
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
-
-  nestjs-console@8.0.0:
-    resolution: {integrity: sha512-ColRYRI9aH8/wlbrcFK/AeTAvsLlk0vgNIqL9FivUjo+q63S6AB+vUf7Jx7mQ1oIT2bD4awEOt0qEnkHmxsi4Q==}
-    peerDependencies:
-      '@nestjs/common': ^9
-      '@nestjs/core': ^9
 
   nestjs-request-context@4.0.0:
     resolution: {integrity: sha512-gGGa7xQuZtk9y88jcLDoL8w/zIeweS5ODUV2yMjbJao1vYzxsp5Htm+tYPwJ38+YXH9LoYv4YneJ8q8YYN+5Ww==}
@@ -7295,8 +7282,6 @@ snapshots:
 
   commander@7.2.0: {}
 
-  commander@8.3.0: {}
-
   comment-json@4.4.1:
     dependencies:
       array-timsort: 1.0.3
@@ -9319,13 +9304,6 @@ snapshots:
   negotiator@1.0.0: {}
 
   neo-async@2.6.2: {}
-
-  nestjs-console@8.0.0(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.16):
-    dependencies:
-      '@nestjs/common': 11.1.16(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/core': 11.1.16(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@11.1.16)(@nestjs/platform-express@11.1.16)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      commander: 8.3.0
-      ora: 5.4.1
 
   nestjs-request-context@4.0.0(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)):
     dependencies:

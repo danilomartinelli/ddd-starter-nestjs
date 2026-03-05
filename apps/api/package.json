@@ -52,7 +52,6 @@
     "graphql": "^16.6.0",
     "jest-cucumber": "^3.0.1",
     "nanoid": "^3.3.4",
-    "nestjs-console": "^8.0.0",
     "nestjs-request-context": "^4.0.0",
     "nestjs-slonik": "^9.0.0",
     "oxide.ts": "^1.0.5",
