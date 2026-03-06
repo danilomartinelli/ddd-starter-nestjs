@@ -110,7 +110,7 @@ Before we begin, here are the PROS and CONS of using a complete architecture lik
 
 # Diagram
 
-![Domain-Driven Hexagon](assets/images/DomainDrivenHexagon.png)
+![Domain-Driven Hexagon](apps/api/assets/images/DomainDrivenHexagon.png)
 <sup>Diagram is mostly based on [this one](https://github.com/hgraca/explicit-architecture-php#explicit-architecture-1) + others found online</sup>
 
 In short, data flow looks like this (from left to right):
@@ -150,8 +150,8 @@ Keep your modules small. You should be able to rewrite a module in a relatively 
 
 Code Examples:
 
-- Check [src/modules](src/modules) directory structure.
-- [src/modules/user/commands](src/modules/user/commands) - "commands" directory in a user module includes business use cases (commands) that a module can execute, each with its own Vertical Slice.
+- Check [src/modules](apps/api/src/modules) directory structure.
+- [src/modules/user/commands](apps/api/src/modules/user/commands) - "commands" directory in a user module includes business use cases (commands) that a module can execute, each with its own Vertical Slice.
 
 Read more:
 
@@ -217,7 +217,7 @@ Use cases are, simply said, list of actions required from an application.
 
 </details>
 
-Example file: [create-user.service.ts](src/modules/user/commands/create-user/create-user.service.ts)
+Example file: [create-user.service.ts](apps/api/src/modules/user/commands/create-user/create-user.service.ts)
 
 More about services:
 
@@ -248,9 +248,9 @@ Avoid command handlers executing other commands in this fashion: Command → Com
 
 Example files:
 
-- [create-user.command.ts](src/modules/user/commands/create-user/create-user.command.ts) - a command Object
-- [create-user.message.controller.ts](src/modules/user/commands/create-user/create-user.message.controller.ts) - controller executes a command using a command bus. This decouples it from a command handler.
-- [create-user.service.ts](src/modules/user/commands/create-user/create-user.service.ts) - a command handler.
+- [create-user.command.ts](apps/api/src/modules/user/commands/create-user/create-user.command.ts) - a command Object
+- [create-user.message.controller.ts](apps/api/src/modules/user/commands/create-user/create-user.message.controller.ts) - controller executes a command using a command bus. This decouples it from a command handler.
+- [create-user.service.ts](apps/api/src/modules/user/commands/create-user/create-user.service.ts) - a command handler.
 
 Read more:
 
@@ -267,7 +267,7 @@ Similarly to Commands, Queries can use a `Query Bus` if needed. This way you can
 
 Example files:
 
-- [find-users.query-handler.ts](src/modules/user/queries/find-users/find-users.query-handler.ts) - a query handler. Notice how we query the database directly, without using domain objects or repositories (more info [here](https://codeopinion.com/should-you-use-the-repository-pattern-with-cqrs-yes-and-no/)).
+- [find-users.query-handler.ts](apps/api/src/modules/user/queries/find-users/find-users.query-handler.ts) - a query handler. Notice how we query the database directly, without using domain objects or repositories (more info [here](https://codeopinion.com/should-you-use-the-repository-pattern-with-cqrs-yes-and-no/)).
 
 ---
 
@@ -307,10 +307,10 @@ In Application Core **dependencies point inwards**. Outer layers can depend on i
 
 Example files:
 
-- [repository.port.ts](src/libs/ddd/repository.port.ts) - generic port for repositories
-- [user.repository.port.ts](src/modules/user/database/user.repository.port.ts) - a port for user repository
-- [find-users.query-handler.ts](src/modules/user/queries/find-users/find-users.query-handler.ts) - notice how query handler depends on a port instead of concrete repository implementation, and an implementation is injected
-- [logger.port.ts](src/libs/ports/logger.port.ts) - another example of a port for application logger
+- [repository.port.ts](packages/core/src/ddd/repository.port.ts) - generic port for repositories
+- [user.repository.port.ts](apps/api/src/modules/user/database/user.repository.port.ts) - a port for user repository
+- [find-users.query-handler.ts](apps/api/src/modules/user/queries/find-users/find-users.query-handler.ts) - notice how query handler depends on a port instead of concrete repository implementation, and an implementation is injected
+- [logger.port.ts](packages/core/src/ports/logger.port.ts) - another example of a port for application logger
 
 Read more:
 
@@ -356,8 +356,8 @@ Entities:
 
 Example files:
 
-- [user.entity.ts](src/modules/user/domain/user.entity.ts)
-- [wallet.entity.ts](src/modules/wallet/domain/wallet.entity.ts)
+- [user.entity.ts](apps/api/src/modules/user/domain/user.entity.ts)
+- [wallet.entity.ts](apps/api/src/modules/wallet/domain/wallet.entity.ts)
 
 Read more:
 
@@ -388,8 +388,8 @@ In summary, if you combine multiple related entities and value objects inside on
 
 Example files:
 
-- [aggregate-root.base.ts](src/libs/ddd/aggregate-root.base.ts) - abstract base class.
-- [user.entity.ts](src/modules/user/domain/user.entity.ts) - aggregates are just entities that have to follow a set of specific rules described above.
+- [aggregate-root.base.ts](packages/core/src/ddd/aggregate-root.base.ts) - abstract base class.
+- [user.entity.ts](apps/api/src/modules/user/domain/user.entity.ts) - aggregates are just entities that have to follow a set of specific rules described above.
 
 Read more:
 
@@ -424,10 +424,10 @@ There are multiple ways on implementing an event bus for Domain Events, for exam
 
 Examples:
 
-- [user-created.domain-event.ts](src/modules/user/domain/events/user-created.domain-event.ts) - simple object that holds data related to published event.
-- [create-wallet-when-user-is-created.domain-event-handler.ts](src/modules/wallet/application/event-handlers/create-wallet-when-user-is-created.domain-event-handler.ts) - this is an example of Domain Event Handler that executes some actions when a domain event is raised (in this case, when user is created it also creates a wallet for that user).
-- [sql-repository.base.ts](src/libs/db/sql-repository.base.ts) - repository publishes all domain events for execution when it persists changes to an aggregate.
-- [create-user.service.ts](src/modules/user/commands/create-user/create-user.service.ts) - in a service we execute a global transaction to make sure all the changes done by Domain Events across the application are stored atomically (all or nothing).
+- [user-created.domain-event.ts](apps/api/src/modules/user/domain/events/user-created.domain-event.ts) - simple object that holds data related to published event.
+- [create-wallet-when-user-is-created.domain-event-handler.ts](apps/api/src/modules/wallet/application/event-handlers/create-wallet-when-user-is-created.domain-event-handler.ts) - this is an example of Domain Event Handler that executes some actions when a domain event is raised (in this case, when user is created it also creates a wallet for that user).
+- [sql-repository.base.ts](packages/core/src/db/sql-repository.base.ts) - repository publishes all domain events for execution when it persists changes to an aggregate.
+- [create-user.service.ts](apps/api/src/modules/user/commands/create-user/create-user.service.ts) - in a service we execute a global transaction to make sure all the changes done by Domain Events across the application are stored atomically (all or nothing).
 
 To have a better understanding on domain events and implementation read this:
 
@@ -493,7 +493,7 @@ Imagine you have a `User` entity which needs to have an `address` of a user. Usu
 
 Example files:
 
-- [address.value-object.ts](src/modules/user/domain/value-objects/address.value-object.ts)
+- [address.value-object.ts](apps/api/src/modules/user/domain/value-objects/address.value-object.ts)
 
 Read more about Value Objects:
 
@@ -520,7 +520,7 @@ Below we will discuss some validation techniques for your domain objects.
 
 Example files:
 
-- [wallet.entity.ts](src/modules/wallet/domain/wallet.entity.ts) - notice `validate` method. This is a simplified example of enforcing a domain invariant.
+- [wallet.entity.ts](apps/api/src/modules/wallet/domain/wallet.entity.ts) - notice `validate` method. This is a simplified example of enforcing a domain invariant.
 
 Read more:
 
@@ -677,8 +677,8 @@ By combining compile and runtime validations, using objects instead of primitive
 
 You may have noticed that we do validation in multiple places:
 
-1. First when user input is sent to our application. In our example we use DTO decorators: [create-user.request-dto.ts](src/modules/user/commands/create-user/create-user.request.dto.ts).
-2. Second time in domain objects, for example: [address.value-object.ts](src/modules/user/domain/value-objects/address.value-object.ts).
+1. First when user input is sent to our application. In our example we use DTO decorators: [create-user.request-dto.ts](apps/api/src/modules/user/commands/create-user/create-user.request.dto.ts).
+2. Second time in domain objects, for example: [address.value-object.ts](apps/api/src/modules/user/domain/value-objects/address.value-object.ts).
 
 So, why are we validating things twice? Let's call a second validation "_guarding_", and distinguish between guarding and validating:
 
@@ -695,7 +695,7 @@ Domain classes should always guard themselves against becoming invalid.
 
 For preventing null/undefined values, empty objects and arrays, incorrect input length etc. a library of [guards](<https://en.wikipedia.org/wiki/Guard_(computer_science)>) can be created.
 
-Example file: [guard.ts](src/libs/guard.ts)
+Example file: [guard.ts](packages/core/src/guard.ts)
 
 **Keep in mind** that not all validations/guarding can be done in a single domain object, it should validate only rules shared by all contexts. There are cases when validation may be different depending on a context, or one field may involve another field, or even a different entity. Handle those cases accordingly.
 
@@ -770,15 +770,15 @@ function createUser(
 ): Result<UserEntity, CreateUserError> {
   // ^ explicitly showing what function returns
   if (await userRepo.exists(command.email)) {
-    return Err(new UserAlreadyExistsError()); // <- returning an Error
+    return err(new UserAlreadyExistsError()); // <- returning an Error
   }
   if (!validate(command.address)) {
-    return Err(new IncorrectUserAddressError());
+    return err(new IncorrectUserAddressError());
   }
   // else
   const user = UserEntity.create(command);
   await this.userRepo.save(user);
-  return Ok(user);
+  return ok(user);
 }
 ```
 
@@ -788,16 +788,16 @@ This approach gives us a fixed set of expected error types, so we can decide wha
 /* in HTTP context we want to convert each error to an 
 error with a corresponding HTTP status code: 409, 400 or 500 */
 const result = await this.commandBus.execute(command);
-return match(result, {
-  Ok: (id: string) => new IdResponse(id),
-  Err: (error: Error) => {
+return result.match(
+  (id: string) => new IdResponse(id),
+  (error: Error) => {
     if (error instanceof UserAlreadyExistsError)
       throw new ConflictHttpException(error.message);
     if (error instanceof IncorrectUserAddressError)
       throw new BadRequestException(error.message);
     throw error;
   },
-});
+);
 ```
 
 Throwing makes errors invisible for the consumer of your functions/methods (until those errors happen at runtime, or until you dig deeply into the source code and find them). This means those errors are less likely to be handled properly.
@@ -808,16 +808,16 @@ Returning errors instead of throwing them adds some extra boilerplate code, but 
 
 Libraries you can use:
 
-- [oxide.ts](https://www.npmjs.com/package/oxide.ts) - this is a nice npm package if you want to use a Result object
+- [neverthrow](https://www.npmjs.com/package/neverthrow) - this is a nice npm package if you want to use a Result object
 - [@badrap/result](https://www.npmjs.com/package/@badrap/result) - alternative
 
 Example files:
 
-- [user.errors.ts](src/modules/user/domain/user.errors.ts) - user errors
-- [create-user.service.ts](src/modules/user/commands/create-user/create-user.service.ts) - notice how `Err(new UserAlreadyExistsError())` is returned instead of throwing it.
-- [create-user.http.controller.ts](src/modules/user/commands/create-user/create-user.http.controller.ts) - in a user http controller we match an error and decide what to do with it. If an error is `UserAlreadyExistsError` we throw a `Conflict Exception` which a user will receive as `409 - Conflict`. If an error is unknown we just throw it and our framework will return it to the user as `500 - Internal Server Error`.
-- [create-user.cli.controller.ts](src/modules/user/commands/create-user/create-user.cli.controller.ts) - in a CLI controller we don't care about returning a correct status code so we just `.unwrap()` a result, which will just throw in case of an error.
-- [exceptions](src/libs/exceptions) folder contains some generic app exceptions (not domain specific)
+- [user.errors.ts](apps/api/src/modules/user/domain/user.errors.ts) - user errors
+- [create-user.service.ts](apps/api/src/modules/user/commands/create-user/create-user.service.ts) - notice how `err(new UserAlreadyExistsError())` is returned instead of throwing it.
+- [create-user.http.controller.ts](apps/api/src/modules/user/commands/create-user/create-user.http.controller.ts) - in a user http controller we match an error and decide what to do with it. If an error is `UserAlreadyExistsError` we throw a `Conflict Exception` which a user will receive as `409 - Conflict`. If an error is unknown we just throw it and our framework will return it to the user as `500 - Internal Server Error`.
+- [create-user.cli.controller.ts](apps/api/src/modules/user/commands/create-user/create-user.cli.controller.ts) - in a CLI controller we don't need to return HTTP status codes, so we just log the result or exit with an error code.
+- [exceptions](packages/core/src/exceptions) folder contains some generic app exceptions (not domain specific)
 
 Read more:
 
@@ -868,9 +868,9 @@ Contains `Controllers` and `Request`/`Response` DTOs (can also contain `Views`, 
 
 One controller per trigger type can be used to have a clearer separation. For example:
 
-- [create-user.http.controller.ts](src/modules/user/commands/create-user/create-user.http.controller.ts) for http requests ([NestJS Controllers](https://docs.nestjs.com/controllers)),
-- [create-user.cli.controller.ts](src/modules/user/commands/create-user/create-user.cli.controller.ts) for command line interface access ([NestJS Console](https://www.npmjs.com/package/nestjs-console))
-- [create-user.message.controller.ts](src/modules/user/commands/create-user/create-user.message.controller.ts) for external messages ([NestJS Microservices](https://docs.nestjs.com/microservices/basics)).
+- [create-user.http.controller.ts](apps/api/src/modules/user/commands/create-user/create-user.http.controller.ts) for http requests ([NestJS Controllers](https://docs.nestjs.com/controllers)),
+- [create-user.cli.controller.ts](apps/api/src/modules/user/commands/create-user/create-user.cli.controller.ts) for command line interface access ([nest-commander](https://www.npmjs.com/package/nest-commander))
+- [create-user.message.controller.ts](apps/api/src/modules/user/commands/create-user/create-user.message.controller.ts) for external messages ([NestJS Microservices](https://docs.nestjs.com/microservices/basics)).
 - etc.
 
 ### Resolvers
@@ -881,7 +881,7 @@ One of the main benefits of a layered architecture is separation of concerns. As
 
 Example files:
 
-- [create-user.graphql-resolver.ts](src/modules/user/commands/create-user/graphql-example/create-user.graphql-resolver.ts)
+- [create-user.graphql-resolver.ts](apps/api/src/modules/user/commands/create-user/graphql-example/create-user.graphql-resolver.ts)
 
 ---
 
@@ -898,7 +898,7 @@ Input data sent by a user.
 
 Examples:
 
-- [create-user.request.dto.ts](src/modules/user/commands/create-user/create-user.request.dto.ts)
+- [create-user.request.dto.ts](apps/api/src/modules/user/commands/create-user/create-user.request.dto.ts)
 
 ### Response DTOs
 
@@ -908,7 +908,7 @@ Output data returned to a user.
 
 Examples:
 
-- [user.response.dto.ts](src/modules/user/dtos/user.response.dto.ts)
+- [user.response.dto.ts](apps/api/src/modules/user/dtos/user.response.dto.ts)
 
 ---
 
@@ -916,7 +916,7 @@ DTO contracts protect your clients from internal data structure changes that may
 
 When updating DTO interfaces, a new version of API can be created by prefixing an endpoint with a version number, for example: `v2/users`. This will make transition painless by preventing breaking compatibility for users that are slow to update their apps that uses your API.
 
-You may have noticed that our [create-user.command.ts](src/modules/user/commands/create-user/create-user.command.ts) contains the same properties as [create-user.request.dto.ts](src/modules/user/commands/create-user/create-user.request.dto.ts).
+You may have noticed that our [create-user.command.ts](apps/api/src/modules/user/commands/create-user/create-user.command.ts) contains the same properties as [create-user.request.dto.ts](apps/api/src/modules/user/commands/create-user/create-user.request.dto.ts).
 So why do we need DTOs if we already have Command objects that carry properties? Shouldn't we just have one class to avoid duplication?
 
 > Because commands and DTOs are different things, they tackle different problems. Commands are serializable method calls - calls of the methods in the domain model. Whereas DTOs are the data contracts. The main reason to introduce this separate layer with data contracts is to provide backward compatibility for the clients of your API. Without the DTOs, the API will have breaking changes with every modification of the domain model.
@@ -984,11 +984,11 @@ The data flow here looks something like this: repository receives a domain `Enti
 
 Application's core usually is not allowed to depend on repositories directly, instead it depends on abstractions (ports/interfaces). This makes data retrieval technology-agnostic.
 
-**Note**: in theory, most publications out there recommend abstracting a database with interfaces. In practice, it's not always useful. Most of the projects out there never change database technology (or rewrite most of the code anyway if they do). Another downside is that if you abstract a database you are more likely not using its full potential. This project abstracts repositories with a generic port to make a practical example [repository.port.ts](src/libs/ddd/repository.port.ts), but this doesn't mean you should do that too. Think carefully before using abstractions. More info on this topic: [Should you Abstract the Database?](https://enterprisecraftsmanship.com/posts/should-you-abstract-database/)
+**Note**: in theory, most publications out there recommend abstracting a database with interfaces. In practice, it's not always useful. Most of the projects out there never change database technology (or rewrite most of the code anyway if they do). Another downside is that if you abstract a database you are more likely not using its full potential. This project abstracts repositories with a generic port to make a practical example [repository.port.ts](packages/core/src/ddd/repository.port.ts), but this doesn't mean you should do that too. Think carefully before using abstractions. More info on this topic: [Should you Abstract the Database?](https://enterprisecraftsmanship.com/posts/should-you-abstract-database/)
 
 Example files:
 
-This project contains abstract repository class that allows to make basic CRUD operations: [sql-repository.base.ts](src/libs/db/sql-repository.base.ts). This base class is then extended by a specific repository, and all specific operations that an entity may need are implemented in that specific repo: [user.repository.ts](src/modules/user/database/user.repository.ts).
+This project contains abstract repository class that allows to make basic CRUD operations: [sql-repository.base.ts](packages/core/src/db/sql-repository.base.ts). This base class is then extended by a specific repository, and all specific operations that an entity may need are implemented in that specific repo: [user.repository.ts](apps/api/src/modules/user/database/user.repository.ts).
 
 Read more:
 
@@ -1012,8 +1012,8 @@ Over time, when the amount of data grows, there may be a need to make some chang
 
 Example files:
 
-- [user.repository.ts](src/modules/user/database/user.repository.ts) <- notice `userSchema` and `UserModel` type that describe how user looks in a database
-- [user.mapper.ts](src/modules/user/user.mapper.ts) <- Persistence models should also have a corresponding mapper to map from domain to persistence and back.
+- [user.repository.ts](apps/api/src/modules/user/database/user.repository.ts) <- notice `userSchema` and `UserModel` type that describe how user looks in a database
+- [user.mapper.ts](apps/api/src/modules/user/user.mapper.ts) <- Persistence models should also have a corresponding mapper to map from domain to persistence and back.
 
 For smaller projects you could use [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping) libraries like [Typeorm](https://typeorm.io/) for simplicity. But for projects with more complexity ORMs are not flexible and performant enough. For this reason, this project uses raw queries with a [Slonik](https://github.com/gajus/slonik) client library.
 
@@ -1089,8 +1089,8 @@ For BDD tests [Cucumber](https://cucumber.io/) with [Gherkin](https://cucumber.i
 
 Example files:
 
-- [create-user.feature](tests/user/create-user/create-user.feature) - feature file that contains human-readable Gherkin steps
-- [create-user.e2e-spec.ts](tests/user/create-user/create-user.e2e-spec.ts) - e2e / behavioral test
+- [create-user.feature](apps/api/tests/user/create-user/create-user.feature) - feature file that contains human-readable Gherkin steps
+- [create-user.e2e-spec.ts](apps/api/tests/user/create-user/create-user.e2e-spec.ts) - e2e / behavioral test
 
 Read more:
 
@@ -1179,11 +1179,11 @@ There are different approaches to file/folder structuring, choose what suits bet
 
 Examples:
 
-- [user](src/modules/user) module.
-- [create-user](src/modules/user/commands/create-user) subcomponent.
+- [user](apps/api/src/modules/user) module.
+- [create-user](apps/api/src/modules/user/commands/create-user) subcomponent.
 
-- [Commands](src/modules/user/commands) directory contains all state changing use cases and each use case inside it contains most of the things that it needs: controller, service, DTOs, command, etc.
-- [Queries](src/modules/user/queries) directory is structured in the same way as commands but contains data retrieval use cases.
+- [Commands](apps/api/src/modules/user/commands) directory contains all state changing use cases and each use case inside it contains most of the things that it needs: controller, service, DTOs, command, etc.
+- [Queries](apps/api/src/modules/user/queries) directory is structured in the same way as commands but contains data retrieval use cases.
 
 Read more:
 
@@ -1219,13 +1219,13 @@ For example:
   },
 ```
 
-Snippet of code above will prevent your domain layer to depend on the API layer or database layer. Example config: [.dependency-cruiser.js](.dependency-cruiser.js)
+Snippet of code above will prevent your domain layer to depend on the API layer or database layer. Example config: [.dependency-cruiser.js](apps/api/.dependency-cruiser.js)
 
 You can also generate graphs like this:
 
 <details>
 <summary>Click to see dependency graph</summary>
- <img src="assets/dependency-graph.svg" alt="Dependency graph">
+ <img src="apps/api/assets/dependency-graph.svg" alt="Dependency graph">
 </details>
 <br>
 
@@ -1245,7 +1245,7 @@ Classes that can be extended should be designed for extensibility and usually sh
 
 **Note**: in TypeScript, unlike other languages, there is no default way to make class `final`. But there is a way around it using a custom decorator.
 
-Example file: [final.decorator.ts](src/libs/decorators/final.decorator.ts)
+Example file: [final.decorator.ts](packages/core/src/decorators/final.decorator.ts)
 
 Read more:
 
