@@ -770,15 +770,15 @@ function createUser(
 ): Result<UserEntity, CreateUserError> {
   // ^ explicitly showing what function returns
   if (await userRepo.exists(command.email)) {
-    return Err(new UserAlreadyExistsError()); // <- returning an Error
+    return err(new UserAlreadyExistsError()); // <- returning an Error
   }
   if (!validate(command.address)) {
-    return Err(new IncorrectUserAddressError());
+    return err(new IncorrectUserAddressError());
   }
   // else
   const user = UserEntity.create(command);
   await this.userRepo.save(user);
-  return Ok(user);
+  return ok(user);
 }
 ```
 
@@ -788,16 +788,16 @@ This approach gives us a fixed set of expected error types, so we can decide wha
 /* in HTTP context we want to convert each error to an 
 error with a corresponding HTTP status code: 409, 400 or 500 */
 const result = await this.commandBus.execute(command);
-return match(result, {
-  Ok: (id: string) => new IdResponse(id),
-  Err: (error: Error) => {
+return result.match(
+  (id: string) => new IdResponse(id),
+  (error: Error) => {
     if (error instanceof UserAlreadyExistsError)
       throw new ConflictHttpException(error.message);
     if (error instanceof IncorrectUserAddressError)
       throw new BadRequestException(error.message);
     throw error;
   },
-});
+);
 ```
 
 Throwing makes errors invisible for the consumer of your functions/methods (until those errors happen at runtime, or until you dig deeply into the source code and find them). This means those errors are less likely to be handled properly.
