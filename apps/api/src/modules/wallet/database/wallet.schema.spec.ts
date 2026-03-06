@@ -33,7 +33,8 @@ describe('walletSchema (Zod)', () => {
   });
 
   it('rejects missing userId', () => {
-    const { userId: _userId, ...incomplete } = validData;
+    const incomplete = { ...validData };
+    delete (incomplete as Record<string, unknown>).userId;
     const result = walletSchema.safeParse(incomplete);
     expect(result.success).toBe(false);
   });

@@ -30,7 +30,8 @@ describe('userSchema (Zod)', () => {
   });
 
   it('rejects missing required fields', () => {
-    const { email: _email, ...incomplete } = validData;
+    const incomplete = { ...validData };
+    delete (incomplete as Record<string, unknown>).email;
     const result = userSchema.safeParse(incomplete);
     expect(result.success).toBe(false);
   });
