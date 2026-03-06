@@ -1,2 +1,7 @@
 // @repo/testing — shared test toolkit
-// Exports are added incrementally as utilities are built
+
+// Matchers — import in setupFilesAfterEnv
+export * from "./matchers";
+
+// Generic factories
+export { createBaseEntityProps } from "./factories";
