@@ -1,0 +1,14 @@
+node_modules
+.git
+.github
+coverage
+*.md
+.env
+.env.*
+!.env.example
+apps/api/docker/
+apps/api/tests/
+packages/*/coverage/
+.turbo
+.claude
+docs/
