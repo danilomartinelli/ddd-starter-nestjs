@@ -68,23 +68,23 @@ The architecture is solid but missing production essentials. Anyone using this a
 
 ### Security Hardening
 
-- [ ] **Helmet** — security headers middleware
-- [ ] **CORS** — configurable origin allowlist via environment variables
-- [ ] **Rate limiting** — `@nestjs/throttler` on public endpoints
-- [ ] **Input sanitization** — beyond class-validator whitelist
+- [x] **Helmet** — security headers middleware
+- [x] **CORS** — configurable origin allowlist via environment variables
+- [x] **Rate limiting** — `@nestjs/throttler` on public endpoints
+- [x] **Input sanitization** — beyond class-validator whitelist
 
 ### Production Infrastructure
 
-- [ ] **Multi-stage Dockerfile** for `apps/api` (build → slim production image)
-- [ ] **docker-compose.prod.yml** with API service, Postgres, Flyway
-- [ ] **Health check endpoint** (`GET /health`) with DB connectivity, uptime, version
-- [ ] **Graceful shutdown** — drain connections, finish in-flight requests
+- [x] **Multi-stage Dockerfile** for `apps/api` (build → slim production image)
+- [x] **docker-compose.prod.yml** with API service, Postgres, Flyway
+- [x] **Health check endpoint** (`GET /health`) with DB connectivity, uptime, version
+- [x] **Graceful shutdown** — drain connections, finish in-flight requests
 
 ### Structured Logging
 
-- [ ] Replace default NestJS logger with **Pino** (structured JSON, log levels)
-- [ ] Request/response logging middleware with timing
-- [ ] Correlation ID per request via `RequestContextService` + `AsyncLocalStorage`
+- [x] Replace default NestJS logger with **Pino** (structured JSON, log levels)
+- [x] Request/response logging middleware with timing
+- [x] Correlation ID per request via `RequestContextService` + `AsyncLocalStorage`
 
 ---
 
