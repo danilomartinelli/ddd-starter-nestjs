@@ -12,8 +12,11 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,mjs}": [
-      "eslint --fix",
+    "apps/api/**/*.{ts,js,mjs}": [
+      "pnpm -C apps/api exec eslint --fix",
+      "prettier --write"
+    ],
+    "packages/**/*.{ts,js}": [
       "prettier --write"
     ],
     "*.{json,md,yml,yaml}": [
@@ -23,6 +26,7 @@
   "devDependencies": {
     "husky": "^9.1.7",
     "lint-staged": "^16.3.2",
+    "prettier": "^3.8.1",
     "turbo": "^2"
   },
   "packageManager": "pnpm@9.15.4",
