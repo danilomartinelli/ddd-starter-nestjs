@@ -1,0 +1,47 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    environment:
+      NODE_ENV: production
+      LOG_PRETTY: "false"
+
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-ddh}
+      POSTGRES_USER: ${DB_USERNAME:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  flyway:
+    image: flyway/flyway
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./apps/api/database/migrations:/flyway/sql
+    command: migrate
+    environment:
+      FLYWAY_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-ddh}
+      FLYWAY_USER: ${DB_USERNAME:-user}
+      FLYWAY_PASSWORD: ${DB_PASSWORD:-password}
+
+volumes:
+  pgdata:
