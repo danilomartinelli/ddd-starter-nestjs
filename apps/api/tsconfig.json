@@ -24,7 +24,8 @@
       "@src/*": ["src/*"],
       "@modules/*": ["src/modules/*"],
       "@config/*": ["src/configs/*"],
-      "@tests/*": ["tests/*"]
+      "@tests/*": ["tests/*"],
+      "@repo/infra": ["../../packages/infra/src/index.ts"]
     }
   }
 }

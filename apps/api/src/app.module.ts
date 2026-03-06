@@ -1,15 +1,17 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { SlonikModule } from '@danilomartinelli/nestjs-slonik';
+import { SlonikModule, SLONIK_POOL } from '@danilomartinelli/nestjs-slonik';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { UserModule } from '@modules/user/user.module';
 import { WalletModule } from '@modules/wallet/wallet.module';
 import { RequestContextModule } from 'nestjs-request-context';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ContextInterceptor, ExceptionInterceptor } from '@repo/core';
+import { SecurityModule, LoggingModule, HealthModule } from '@repo/infra';
 import { postgresConnectionUri } from './configs/database.config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { get } from 'env-var';
 
 const interceptors = [
   {
@@ -24,6 +26,18 @@ const interceptors = [
 
 @Module({
   imports: [
+    // Infrastructure
+    SecurityModule.forRoot({
+      ttl: get('THROTTLE_TTL').default(60000).asIntPositive(),
+      limit: get('THROTTLE_LIMIT').default(100).asIntPositive(),
+    }),
+    LoggingModule.forRoot({
+      level: get('LOG_LEVEL').default('info').asString(),
+      prettyPrint: get('LOG_PRETTY').default('false').asBool(),
+    }),
+    HealthModule.forRoot(SLONIK_POOL),
+
+    // Existing
     EventEmitterModule.forRoot(),
     RequestContextModule,
     SlonikModule.forRoot({

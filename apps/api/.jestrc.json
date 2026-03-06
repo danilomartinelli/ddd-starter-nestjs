@@ -16,7 +16,8 @@
     "@config/(.*)$": "<rootDir>/src/configs/$1",
     "@tests/(.*)$": "<rootDir>/tests/$1",
     "@repo/core/src/(.*)$": "<rootDir>/../../packages/core/src/$1",
-    "@repo/core": "<rootDir>/../../packages/core/src/index.ts"
+    "@repo/core": "<rootDir>/../../packages/core/src/index.ts",
+    "@repo/infra": "<rootDir>/../../packages/infra/src/index.ts"
   },
   "transformIgnorePatterns": [],
   "transform": {

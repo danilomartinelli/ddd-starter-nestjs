@@ -12,15 +12,19 @@
     "@config/(.*)$": "<rootDir>/src/configs/$1",
     "@tests/(.*)$": "<rootDir>/tests/$1",
     "@repo/core/src/(.*)$": "<rootDir>/../../packages/core/src/$1",
-    "@repo/core": "<rootDir>/../../packages/core/src/index.ts"
+    "@repo/core": "<rootDir>/../../packages/core/src/index.ts",
+    "@repo/infra": "<rootDir>/../../packages/infra/src/index.ts"
   },
   "transformIgnorePatterns": [],
   "transform": {
-    "^.+\\.(t|j)s$": ["ts-jest", {
-      "tsconfig": {
-        "allowJs": true,
-        "esModuleInterop": true
+    "^.+\\.(t|j)s$": [
+      "ts-jest",
+      {
+        "tsconfig": {
+          "allowJs": true,
+          "esModuleInterop": true
+        }
       }
-    }]
+    ]
   }
 }
