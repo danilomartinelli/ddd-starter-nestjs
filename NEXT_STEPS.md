@@ -12,28 +12,28 @@ Every contributor should get fast, automated feedback. Without CI, quality depen
 
 ### GitHub Actions CI Pipeline
 
-- [ ] Workflow on `push` and `pull_request` to `main`
-- [ ] Matrix: Node 22.x, Ubuntu latest
-- [ ] Steps: install (`pnpm install --frozen-lockfile`) → lint → build → test → test:e2e (Postgres service container)
-- [ ] Turbo remote cache for faster CI runs
-- [ ] `pnpm deps:validate` as a CI step to enforce architectural layer rules
+- [x] Workflow on `push` and `pull_request` to `main`
+- [x] Matrix: Node 22.x, Ubuntu latest
+- [x] Steps: install (`pnpm install --frozen-lockfile`) → lint → build → test → test:e2e (Postgres service container)
+- [x] Turbo remote cache for faster CI runs
+- [x] `pnpm deps:validate` as a CI step to enforce architectural layer rules
 
 ### Pre-commit Hooks
 
-- [ ] `husky` + `lint-staged` for Prettier and ESLint on staged files
-- [ ] `tsc --noEmit` for type checking before commit
+- [x] `husky` + `lint-staged` for Prettier and ESLint on staged files
+- [x] `tsc --noEmit` for type checking before commit
 
 ### README Enhancements
 
-- [ ] CI status badge
-- [ ] Coverage badge (Codecov)
-- [ ] Node.js version and license badges
+- [x] CI status badge
+- [x] Coverage badge (Codecov)
+- [x] Node.js version and license badges
 
 ---
 
 ## Phase 2: Test Coverage
 
-The project has only 2 e2e tests. Domain logic — the most valuable layer — has zero unit tests. For a DDD reference project, tests *are* documentation of business rules.
+The project has only 2 e2e tests. Domain logic — the most valuable layer — has zero unit tests. For a DDD reference project, tests _are_ documentation of business rules.
 
 ### Domain Layer
 
