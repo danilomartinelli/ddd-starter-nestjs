@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { get } from 'env-var';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,6 @@ async function bootstrap() {
 
   app.enableShutdownHooks();
 
-  await app.listen(3000);
+  await app.listen(get('PORT').default(3000).asIntPositive());
 }
 bootstrap();
