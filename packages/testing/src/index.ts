@@ -8,3 +8,6 @@ export { createBaseEntityProps } from "./factories";
 
 // Fakes for unit testing
 export { InMemoryRepository, FakeEventBus } from "./fakes";
+
+// Database helpers for integration testing
+export { TestDatabaseHelper } from "./database";

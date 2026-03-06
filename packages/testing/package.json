@@ -7,7 +7,8 @@
   "scripts": {},
   "dependencies": {
     "@repo/core": "workspace:*",
-    "neverthrow": "^8.2.0"
+    "neverthrow": "^8.2.0",
+    "slonik": "^48.12.3"
   },
   "devDependencies": {
     "@types/jest": "29.5.14",

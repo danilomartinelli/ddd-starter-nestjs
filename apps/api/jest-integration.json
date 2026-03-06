@@ -1,0 +1,29 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "coverageDirectory": "./tests/coverage",
+  "setupFilesAfterEnv": ["./tests/setup/jest-integration-setup.ts"],
+  "globalSetup": "<rootDir>/tests/setup/jestGlobalSetup.ts",
+  "testRegex": ".integration-spec.ts$",
+  "moduleNameMapper": {
+    "@src/(.*)$": "<rootDir>/src/$1",
+    "@modules/(.*)$": "<rootDir>/src/modules/$1",
+    "@config/(.*)$": "<rootDir>/src/configs/$1",
+    "@tests/(.*)$": "<rootDir>/tests/$1",
+    "@repo/core/src/(.*)$": "<rootDir>/../../packages/core/src/$1",
+    "@repo/core": "<rootDir>/../../packages/core/src/index.ts"
+  },
+  "transformIgnorePatterns": [],
+  "transform": {
+    "^.+\\.(t|j)s$": [
+      "ts-jest",
+      {
+        "tsconfig": {
+          "allowJs": true,
+          "esModuleInterop": true
+        }
+      }
+    ]
+  }
+}
