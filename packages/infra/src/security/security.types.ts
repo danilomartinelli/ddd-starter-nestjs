@@ -4,3 +4,8 @@ export interface ThrottleOptions {
   /** Max requests per window */
   limit: number;
 }
+
+export interface BootstrapSecurityOptions {
+  corsOrigins?: string[];
+  corsCredentials?: boolean;
+}
