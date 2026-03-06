@@ -37,28 +37,28 @@ The project has only 2 e2e tests. Domain logic — the most valuable layer — h
 
 ### Domain Layer
 
-- [ ] Entity creation via factory methods (valid and invalid props)
-- [ ] Value Object validation (Email, Address, etc.)
-- [ ] Domain Event emission on aggregate state changes
-- [ ] Guard utility edge cases
+- [x] Entity creation via factory methods (valid and invalid props)
+- [x] Value Object validation (Email, Address, etc.)
+- [x] Domain Event emission on aggregate state changes
+- [x] Guard utility edge cases
 
 ### Application Layer
 
-- [ ] Command handler success and failure paths (mock repositories)
-- [ ] Query handler tests with mock data
-- [ ] Domain event propagation after command execution
+- [x] Command handler success and failure paths (mock repositories)
+- [x] Query handler tests with mock data
+- [x] Domain event propagation after command execution
 
 ### Infrastructure Layer
 
-- [ ] Repository write/read round-trip tests against test DB
-- [ ] Pagination query tests
-- [ ] Mapper tests (entity ↔ persistence model)
+- [x] Repository write/read round-trip tests against test DB
+- [x] Pagination query tests
+- [x] Mapper tests (entity ↔ persistence model)
 
 ### Testing Infrastructure
 
-- [ ] Coverage thresholds in Jest (80% domain, 70% application)
-- [ ] Coverage report upload to Codecov in CI
-- [ ] `packages/testing` workspace with shared factories, builders, fixtures
+- [x] Coverage thresholds in Jest (85% core, 80% api)
+- [x] Coverage report upload to Codecov in CI
+- [x] `packages/testing` workspace with shared factories, builders, fixtures
 
 ---
 
