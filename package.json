@@ -8,9 +8,21 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "format": "turbo run format",
-    "dev": "turbo run start:dev"
+    "dev": "turbo run start:dev",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
     "turbo": "^2"
   },
   "packageManager": "pnpm@9.15.4",
