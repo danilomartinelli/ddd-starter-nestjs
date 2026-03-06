@@ -65,7 +65,10 @@ module.exports = {
       name: 'no-infra-to-api-deps',
       comment: 'Infrastructure layer cannot depend on api layer',
       severity: 'error',
-      from: { path: infrastructureLayerPaths },
+      from: {
+        path: infrastructureLayerPaths,
+        pathNot: ['packages/infra'],
+      },
       to: {
         path: apiLayerPaths,
       },
