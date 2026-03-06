@@ -3,10 +3,10 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-} from '@nestjs/common';
-import { Observable, tap } from 'rxjs';
-import { randomUUID } from 'crypto';
-import { RequestContextService } from './AppRequestContext';
+} from "@nestjs/common";
+import { Observable, tap } from "rxjs";
+import { randomUUID } from "crypto";
+import { RequestContextService } from "./AppRequestContext";
 
 @Injectable()
 export class ContextInterceptor implements NestInterceptor {
@@ -15,9 +15,9 @@ export class ContextInterceptor implements NestInterceptor {
 
     /**
      * Setting an ID in the global context for each request.
-     * This ID can be used as correlation id shown in logs
+     * Prefer Pino's request ID (set by pino-http), then body.requestId, then generate new.
      */
-    const requestId = request?.body?.requestId ?? randomUUID();
+    const requestId = request?.id ?? request?.body?.requestId ?? randomUUID();
 
     RequestContextService.setRequestId(requestId);
 
