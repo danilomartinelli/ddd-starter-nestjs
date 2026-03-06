@@ -1,33 +1,35 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { getMigrator } from './getMigrator';
+import { createPool, sql } from 'slonik';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as dotenv from 'dotenv';
 
-// Utility function to run a migration
-export const seed = async (query, file) => {
-  console.log(`executing migration: ${file} ...`);
-  const { pool, migrator } = await getMigrator();
-  await migrator.up();
-  await pool.query(query);
-  console.log(`${file} migration executed`);
-};
+const envPath = path.resolve(
+  __dirname,
+  process.env.NODE_ENV === 'test' ? '../.env.test' : '../.env',
+);
+dotenv.config({ path: envPath });
+
+const connectionUri = `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
 
 const directoryPath = path.join(__dirname, 'seeds');
-async function runAll() {
-  fs.readdir(directoryPath, async function (err, files) {
-    if (err) {
-      return console.log('Unable to scan directory: ' + err);
-    }
-    for (const file of files) {
-      const data = fs.readFileSync(path.resolve(directoryPath, file), {
-        encoding: 'utf8',
-        flag: 'r',
-      });
-      await seed({ sql: data, values: [], type: 'SLONIK_TOKEN_SQL' }, file);
-    }
-    console.log('done');
-    process.exit(0);
-  });
+
+async function runAll(): Promise<void> {
+  const pool = await createPool(connectionUri);
+
+  const files = fs.readdirSync(directoryPath);
+  for (const file of files) {
+    console.log(`executing seed: ${file} ...`);
+    const data = fs.readFileSync(path.resolve(directoryPath, file), {
+      encoding: 'utf8',
+    });
+    const rawSql = Object.assign([data], { raw: [data] }) as TemplateStringsArray;
+    await pool.query(sql.unsafe(rawSql));
+    console.log(`${file} seed executed`);
+  }
+
+  await pool.end();
+  console.log('done');
+  process.exit(0);
 }
 
 runAll();

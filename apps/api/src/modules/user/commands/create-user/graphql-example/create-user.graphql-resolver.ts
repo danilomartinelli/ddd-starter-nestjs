@@ -5,7 +5,7 @@ import { CreateUserGqlRequestDto } from './dtos/create-user.gql-request.dto';
 import { IdGqlResponse } from './dtos/id.gql-response.dto';
 import { AggregateID } from '@repo/core';
 import { UserAlreadyExistsError } from '@src/modules/user/domain/user.errors';
-import { Result } from 'oxide.ts';
+import { Result } from 'neverthrow';
 
 // If you are Using GraphQL you'll need a Resolver instead of a Controller
 @Resolver()
@@ -18,9 +18,14 @@ export class CreateUserGraphqlResolver {
   ): Promise<IdGqlResponse> {
     const command = new CreateUserCommand(input);
 
-    const id: Result<AggregateID, UserAlreadyExistsError> =
+    const result: Result<AggregateID, UserAlreadyExistsError> =
       await this.commandBus.execute(command);
 
-    return new IdGqlResponse(id.unwrap());
+    return result.match(
+      (id) => new IdGqlResponse(id),
+      (error) => {
+        throw error;
+      },
+    );
   }
 }

@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   postgres:
     container_name: postgres-container
@@ -12,6 +10,23 @@ services:
       POSTGRES_DB: 'ddh'
     volumes:
       - ddh-postgres:/var/lib/postgresql/data
+    networks:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d ddh"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  flyway:
+    container_name: flyway-container
+    image: redgate/flyway
+    command: -url=jdbc:postgresql://postgres:5432/ddh -user=user -password=password migrate
+    volumes:
+      - ../database/migrations:/flyway/sql
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - postgres
 

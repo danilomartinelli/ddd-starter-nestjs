@@ -1,5 +1,9 @@
-import { AggregateID, AggregateRoot, ArgumentOutOfRangeException } from '@repo/core';
-import { Err, Ok, Result } from 'oxide.ts';
+import {
+  AggregateID,
+  AggregateRoot,
+  ArgumentOutOfRangeException,
+} from '@repo/core';
+import { err, ok, Result } from 'neverthrow';
 import { WalletCreatedDomainEvent } from './events/wallet-created.domain-event';
 import { WalletNotEnoughBalanceError } from './wallet.errors';
 import { randomUUID } from 'crypto';
@@ -33,10 +37,10 @@ export class WalletEntity extends AggregateRoot<WalletProps> {
 
   withdraw(amount: number): Result<null, WalletNotEnoughBalanceError> {
     if (this.props.balance - amount < 0) {
-      return Err(new WalletNotEnoughBalanceError());
+      return err(new WalletNotEnoughBalanceError());
     }
     this.props.balance -= amount;
-    return Ok(null);
+    return ok(null);
   }
 
   /**

@@ -1,7 +1,7 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { Ok, Result } from 'oxide.ts';
+import { QueryHandler } from '@nestjs/cqrs';
+import { ok, Result } from 'neverthrow';
 import { PaginatedParams, PaginatedQueryBase, Paginated } from '@repo/core';
-import { InjectPool } from 'nestjs-slonik';
+import { InjectPool } from '@danilomartinelli/nestjs-slonik';
 import { DatabasePool, sql } from 'slonik';
 import { UserModel, userSchema } from '../../database/user.repository';
 
@@ -21,7 +21,7 @@ export class FindUsersQuery extends PaginatedQueryBase {
 }
 
 @QueryHandler(FindUsersQuery)
-export class FindUsersQueryHandler implements IQueryHandler {
+export class FindUsersQueryHandler {
   constructor(
     @InjectPool()
     private readonly pool: DatabasePool,
@@ -44,15 +44,15 @@ export class FindUsersQueryHandler implements IQueryHandler {
          SELECT *
          FROM users
          WHERE
-           ${query.country ? sql`country = ${query.country}` : true} AND
-           ${query.street ? sql`street = ${query.street}` : true} AND
-           ${query.postalCode ? sql`"postalCode" = ${query.postalCode}` : true}
+           ${query.country ? sql.fragment`country = ${query.country}` : true} AND
+           ${query.street ? sql.fragment`street = ${query.street}` : true} AND
+           ${query.postalCode ? sql.fragment`"postalCode" = ${query.postalCode}` : true}
          LIMIT ${query.limit}
          OFFSET ${query.offset}`;
 
     const records = await this.pool.query(statement);
 
-    return Ok(
+    return ok(
       new Paginated({
         data: records.rows,
         count: records.rowCount,

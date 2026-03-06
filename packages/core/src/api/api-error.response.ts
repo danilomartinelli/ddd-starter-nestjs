@@ -10,7 +10,7 @@ export class ApiErrorResponse {
   @ApiProperty({ example: 'Bad Request' })
   readonly error: string;
 
-  @ApiProperty({ example: 'YevPQs' })
+  @ApiProperty({ example: '3e7b9a1c-8f2d-4b5e-a6c1-d9f0e8b7a2c4' })
   readonly correlationId: string;
 
   @ApiProperty({

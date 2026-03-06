@@ -1,4 +1,4 @@
-import { InjectPool } from 'nestjs-slonik';
+import { InjectPool } from '@danilomartinelli/nestjs-slonik';
 import { DatabasePool } from 'slonik';
 import { z } from 'zod';
 import { SqlRepositoryBase } from '@repo/core';

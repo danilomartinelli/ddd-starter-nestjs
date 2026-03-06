@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { SlonikModule } from 'nestjs-slonik';
+import { SlonikModule } from '@danilomartinelli/nestjs-slonik';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { UserModule } from '@modules/user/user.module';
 import { WalletModule } from '@modules/wallet/wallet.module';
@@ -28,6 +28,7 @@ const interceptors = [
     RequestContextModule,
     SlonikModule.forRoot({
       connectionUri: postgresConnectionUri,
+      isGlobal: true,
     }),
     CqrsModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({

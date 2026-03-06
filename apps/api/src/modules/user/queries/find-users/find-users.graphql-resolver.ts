@@ -1,6 +1,6 @@
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { Result } from 'oxide.ts';
+import { Result } from 'neverthrow';
 import { ResponseBase, Paginated, PaginatedParams } from '@repo/core';
 import { UserModel } from '../../database/user.repository';
 import { UserPaginatedGraphqlResponseDto } from '../../dtos/graphql/user.paginated-gql-response.dto';
@@ -20,7 +20,12 @@ export class FindUsersGraphqlResolver {
       Error
     > = await this.queryBus.execute(query);
 
-    const paginated = result.unwrap();
+    const paginated = result.match(
+      (data) => data,
+      (error) => {
+        throw error;
+      },
+    );
     const response = new UserPaginatedGraphqlResponseDto({
       ...paginated,
       data: paginated.data.map((user) => ({

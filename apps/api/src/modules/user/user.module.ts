@@ -2,7 +2,6 @@ import { Logger, Module, Provider } from '@nestjs/common';
 import { UserRepository } from './database/user.repository';
 import { CreateUserHttpController } from './commands/create-user/create-user.http.controller';
 import { DeleteUserHttpController } from './commands/delete-user/delete-user.http-controller';
-import { CreateUserCliController } from './commands/create-user/create-user.cli.controller';
 import { FindUsersHttpController } from './queries/find-users/find-users.http.controller';
 import { CreateUserMessageController } from './commands/create-user/create-user.message.controller';
 import { CreateUserGraphqlResolver } from './commands/create-user/graphql-example/create-user.graphql-resolver';
@@ -21,8 +20,6 @@ const httpControllers = [
 ];
 
 const messageControllers = [CreateUserMessageController];
-
-const cliControllers: Provider[] = [CreateUserCliController];
 
 const graphqlResolvers: Provider[] = [
   CreateUserGraphqlResolver,
@@ -44,7 +41,6 @@ const repositories: Provider[] = [
   controllers: [...httpControllers, ...messageControllers],
   providers: [
     Logger,
-    ...cliControllers,
     ...repositories,
     ...graphqlResolvers,
     ...commandHandlers,

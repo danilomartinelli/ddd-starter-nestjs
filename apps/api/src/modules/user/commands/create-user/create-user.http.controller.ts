@@ -8,7 +8,7 @@ import {
 import { routesV1 } from '@config/app.routes';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
-import { match, Result } from 'oxide.ts';
+import { Result } from 'neverthrow';
 import { CreateUserCommand } from './create-user.command';
 import { CreateUserRequestDto } from './create-user.request.dto';
 import { UserAlreadyExistsError } from '@modules/user/domain/user.errors';
@@ -42,13 +42,13 @@ export class CreateUserHttpController {
     // Deciding what to do with a Result (similar to Rust matching)
     // if Ok we return a response with an id
     // if Error decide what to do with it depending on its type
-    return match(result, {
-      Ok: (id: string) => new IdResponse(id),
-      Err: (error: Error) => {
+    return result.match(
+      (id: string) => new IdResponse(id),
+      (error: Error) => {
         if (error instanceof UserAlreadyExistsError)
           throw new ConflictHttpException(error.message);
         throw error;
       },
-    });
+    );
   }
 }

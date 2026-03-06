@@ -1,0 +1,39 @@
+services:
+  postgres-test:
+    container_name: postgres-test-container
+    image: postgres:alpine
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'ddh_tests'
+    volumes:
+      - ddh-postgres-test:/var/lib/postgresql/data
+    networks:
+      - postgres-test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d ddh_tests"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  flyway-test:
+    container_name: flyway-test-container
+    image: redgate/flyway
+    platform: linux/amd64
+    command: -url=jdbc:postgresql://postgres-test:5432/ddh_tests -user=user -password=password migrate
+    volumes:
+      - ../database/migrations:/flyway/sql
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    networks:
+      - postgres-test
+
+networks:
+  postgres-test:
+    driver: bridge
+
+volumes:
+  ddh-postgres-test:

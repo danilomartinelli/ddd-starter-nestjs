@@ -1,0 +1,33 @@
+{
+  "name": "@danilomartinelli/nestjs-slonik",
+  "version": "1.0.0",
+  "description": "NestJS module for Slonik PostgreSQL client",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "lint": "echo 'no lint configured yet'"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "slonik": "^48.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "reflect-metadata": "^0.2.0",
+    "rxjs": "^7.8.0",
+    "slonik": "^48.0.0",
+    "typescript": "^5.9.0"
+  }
+}

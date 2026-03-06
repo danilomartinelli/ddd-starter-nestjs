@@ -3,7 +3,9 @@ import { MessagePattern } from '@nestjs/microservices';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateUserCommand } from './create-user.command';
 import { CreateUserRequestDto } from './create-user.request.dto';
-import { IdResponse } from '@repo/core';
+import { AggregateID, IdResponse } from '@repo/core';
+import { Result } from 'neverthrow';
+import { UserAlreadyExistsError } from '@modules/user/domain/user.errors';
 
 @Controller()
 export class CreateUserMessageController {
@@ -13,8 +15,14 @@ export class CreateUserMessageController {
   async create(message: CreateUserRequestDto): Promise<IdResponse> {
     const command = new CreateUserCommand(message);
 
-    const id = await this.commandBus.execute(command);
+    const result: Result<AggregateID, UserAlreadyExistsError> =
+      await this.commandBus.execute(command);
 
-    return new IdResponse(id.unwrap());
+    return result.match(
+      (id) => new IdResponse(id),
+      (error) => {
+        throw error;
+      },
+    );
   }
 }

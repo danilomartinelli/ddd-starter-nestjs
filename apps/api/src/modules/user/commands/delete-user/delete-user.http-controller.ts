@@ -8,7 +8,7 @@ import {
 import { routesV1 } from '@config/app.routes';
 import { CommandBus } from '@nestjs/cqrs';
 import { DeleteUserCommand } from './delete-user.service';
-import { match, Result } from 'oxide.ts';
+import { Result } from 'neverthrow';
 import { NotFoundException, ApiErrorResponse } from '@repo/core';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
@@ -32,13 +32,13 @@ export class DeleteUserHttpController {
     const result: Result<boolean, NotFoundException> =
       await this.commandBus.execute(command);
 
-    match(result, {
-      Ok: (isOk: boolean) => isOk,
-      Err: (error: Error) => {
+    result.match(
+      (isOk: boolean) => isOk,
+      (error: Error) => {
         if (error instanceof NotFoundException)
           throw new NotFoundHttpException(error.message);
         throw error;
       },
-    });
+    );
   }
 }

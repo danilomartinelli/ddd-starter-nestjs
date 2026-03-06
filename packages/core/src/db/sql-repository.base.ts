@@ -4,20 +4,19 @@ import { Mapper } from '../ddd';
 import { RepositoryPort } from '../ddd';
 import { ConflictException } from '../exceptions';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { None, Option, Some } from 'oxide.ts';
+import type { StandardSchemaV1 } from '@standard-schema/spec';
 import {
   DatabasePool,
   DatabaseTransactionConnection,
   IdentifierSqlToken,
-  MixedRow,
   PrimitiveValueExpression,
   QueryResult,
-  QueryResultRow,
+  QuerySqlToken,
   sql,
-  SqlSqlToken,
   UniqueIntegrityConstraintViolationError,
+  ValueExpression,
 } from 'slonik';
-import { ZodTypeAny, TypeOf, ZodObject } from 'zod';
+import { ZodObject } from 'zod';
 import { LoggerPort } from '../ports/logger.port';
 import { ObjectLiteral } from '../types';
 
@@ -37,13 +36,13 @@ export abstract class SqlRepositoryBase<
     protected readonly logger: LoggerPort,
   ) {}
 
-  async findOneById(id: string): Promise<Option<Aggregate>> {
+  async findOneById(id: string): Promise<Aggregate | undefined> {
     const query = sql.type(this.schema)`SELECT * FROM ${sql.identifier([
       this.tableName,
     ])} WHERE id = ${id}`;
 
     const result = await this.pool.query(query);
-    return result.rows[0] ? Some(this.mapper.toDomain(result.rows[0])) : None;
+    return result.rows[0] ? this.mapper.toDomain(result.rows[0]) : undefined;
   }
 
   async findAll(): Promise<Aggregate[]> {
@@ -78,7 +77,7 @@ export abstract class SqlRepositoryBase<
 
   async delete(entity: Aggregate): Promise<boolean> {
     entity.validate();
-    const query = sql`DELETE FROM ${sql.identifier([
+    const query = sql.type(this.schema)`DELETE FROM ${sql.identifier([
       this.tableName,
     ])} WHERE id = ${entity.id}`;
 
@@ -110,10 +109,10 @@ export abstract class SqlRepositoryBase<
       await this.writeQuery(query, entities);
     } catch (error) {
       if (error instanceof UniqueIntegrityConstraintViolationError) {
+        const cause = error.cause as (Error & { detail?: string }) | undefined;
+        const detail = cause?.detail ?? error.message;
         this.logger.debug(
-          `[${RequestContextService.getRequestId()}] ${
-            (error.originalError as any).detail
-          }`,
+          `[${RequestContextService.getRequestId()}] ${detail}`,
         );
         throw new ConflictException('Record already exists', error);
       }
@@ -127,20 +126,10 @@ export abstract class SqlRepositoryBase<
    * and does some debug logging.
    * For read queries use `this.pool` directly
    */
-  protected async writeQuery<T>(
-    sql: SqlSqlToken<
-      T extends MixedRow ? T : Record<string, PrimitiveValueExpression>
-    >,
+  protected async writeQuery<T extends StandardSchemaV1>(
+    query: QuerySqlToken<T>,
     entity: Aggregate | Aggregate[],
-  ): Promise<
-    QueryResult<
-      T extends MixedRow
-        ? T extends ZodTypeAny
-          ? TypeOf<ZodTypeAny & MixedRow & T>
-          : T
-        : T
-    >
-  > {
+  ): Promise<QueryResult<StandardSchemaV1.InferOutput<T>>> {
     const entities = Array.isArray(entity) ? entity : [entity];
     entities.forEach((entity) => entity.validate());
     const entityIds = entities.map((e) => e.id);
@@ -151,7 +140,7 @@ export abstract class SqlRepositoryBase<
       } entities to "${this.tableName}" table: ${entityIds}`,
     );
 
-    const result = await this.pool.query(sql);
+    const result = await this.pool.query(query);
 
     await Promise.all(
       entities.map((entity) =>
@@ -170,10 +159,10 @@ export abstract class SqlRepositoryBase<
    */
   protected generateInsertQuery(
     models: DbModel[],
-  ): SqlSqlToken<QueryResultRow> {
+  ): QuerySqlToken {
     // TODO: generate query from an entire array to insert multiple records at once
     const entries = Object.entries(models[0]);
-    const values: any = [];
+    const values: ValueExpression[] = [];
     const propertyNames: IdentifierSqlToken[] = [];
 
     entries.forEach((entry) => {
@@ -182,20 +171,19 @@ export abstract class SqlRepositoryBase<
         if (entry[1] instanceof Date) {
           values.push(sql.timestamp(entry[1]));
         } else {
-          values.push(entry[1]);
+          values.push(entry[1] as PrimitiveValueExpression);
         }
       }
     });
 
-    const query = sql`INSERT INTO ${sql.identifier([
+    const query = sql.type(this.schema)`INSERT INTO ${sql.identifier([
       this.tableName,
-    ])} (${sql.join(propertyNames, sql`, `)}) VALUES (${sql.join(
+    ])} (${sql.join(propertyNames, sql.fragment`, `)}) VALUES (${sql.join(
       values,
-      sql`, `,
+      sql.fragment`, `,
     )})`;
 
-    const parsedQuery = query;
-    return parsedQuery;
+    return query;
   }
 
   /**

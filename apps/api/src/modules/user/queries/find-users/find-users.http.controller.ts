@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpStatus, Query } from '@nestjs/common';
 import { routesV1 } from '@config/app.routes';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Result } from 'oxide.ts';
+import { Result } from 'neverthrow';
 import { FindUsersRequestDto } from './find-users.request.dto';
 import { FindUsersQuery } from './find-users.query-handler';
 import { Paginated, PaginatedQueryRequestDto, ResponseBase } from '@repo/core';
@@ -33,7 +33,12 @@ export class FindUsersHttpController {
       Error
     > = await this.queryBus.execute(query);
 
-    const paginated = result.unwrap();
+    const paginated = result.match(
+      (data) => data,
+      (error) => {
+        throw error;
+      },
+    );
 
     // Whitelisting returned properties
     return new UserPaginatedResponseDto({
