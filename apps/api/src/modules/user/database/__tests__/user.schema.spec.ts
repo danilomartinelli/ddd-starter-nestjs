@@ -1,4 +1,4 @@
-import { userSchema } from './user.schema';
+import { userSchema } from '../user.schema';
 
 describe('userSchema (Zod)', () => {
   const validData = {

@@ -2,9 +2,14 @@ import { Mapper } from '@repo/core';
 import { Injectable } from '@nestjs/common';
 import { WalletEntity } from './domain/wallet.entity';
 import { WalletModel, walletSchema } from './database/wallet.schema';
+import { WalletResponseDto } from './dtos/wallet.response.dto';
 
 @Injectable()
-export class WalletMapper implements Mapper<WalletEntity, WalletModel> {
+export class WalletMapper implements Mapper<
+  WalletEntity,
+  WalletModel,
+  WalletResponseDto
+> {
   toPersistence(entity: WalletEntity): WalletModel {
     const copy = entity.getProps();
     const record: WalletModel = {
@@ -30,7 +35,11 @@ export class WalletMapper implements Mapper<WalletEntity, WalletModel> {
     return entity;
   }
 
-  toResponse(): any {
-    throw new Error('Not implemented');
+  toResponse(entity: WalletEntity): WalletResponseDto {
+    const props = entity.getProps();
+    const response = new WalletResponseDto(entity);
+    response.userId = props.userId;
+    response.balance = props.balance;
+    return response;
   }
 }

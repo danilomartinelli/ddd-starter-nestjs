@@ -1,10 +1,10 @@
-import { UserEntity } from './user.entity';
-import { UserRoles } from './user.types';
-import { Address } from './value-objects/address.value-object';
-import { UserCreatedDomainEvent } from './events/user-created.domain-event';
-import { UserDeletedDomainEvent } from './events/user-deleted.domain-event';
-import { UserRoleChangedDomainEvent } from './events/user-role-changed.domain-event';
-import { UserAddressUpdatedDomainEvent } from './events/user-address-updated.domain-event';
+import { UserEntity } from '../user.entity';
+import { UserRoles } from '../user.types';
+import { Address } from '../value-objects/address.value-object';
+import { UserCreatedDomainEvent } from '../events/user-created.domain-event';
+import { UserDeletedDomainEvent } from '../events/user-deleted.domain-event';
+import { UserRoleChangedDomainEvent } from '../events/user-role-changed.domain-event';
+import { UserAddressUpdatedDomainEvent } from '../events/user-address-updated.domain-event';
 
 describe('UserEntity', () => {
   const validAddress = new Address({

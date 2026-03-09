@@ -3,22 +3,10 @@ import { InjectPool } from '@danilomartinelli/nestjs-slonik';
 import { DatabasePool, sql } from 'slonik';
 import { ok, Result } from 'neverthrow';
 import { QueryBase } from '@repo/core';
-import { z } from 'zod';
-
-export const userWalletSummaryReadSchema = z.object({
-  id: z.uuid(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
-  userId: z.string(),
-  email: z.string().nullable(),
-  country: z.string().nullable(),
-  walletId: z.string().nullable(),
-  balance: z.number().int().nullable(),
-});
-
-export type UserWalletSummaryReadModel = z.infer<
-  typeof userWalletSummaryReadSchema
->;
+import {
+  userWalletSummaryReadSchema,
+  UserWalletSummaryReadModel,
+} from '../../read-models/user-wallet-summary.read-model';
 
 export class FindUserWalletSummaryQuery extends QueryBase {
   readonly userId: string;

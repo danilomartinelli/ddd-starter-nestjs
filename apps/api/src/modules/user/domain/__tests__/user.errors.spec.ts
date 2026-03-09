@@ -1,4 +1,4 @@
-import { UserAlreadyExistsError } from './user.errors';
+import { UserAlreadyExistsError } from '../user.errors';
 
 describe('UserAlreadyExistsError', () => {
   it('has correct message', () => {

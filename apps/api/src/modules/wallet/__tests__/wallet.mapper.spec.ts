@@ -1,6 +1,7 @@
-import { WalletMapper } from './wallet.mapper';
-import { WalletEntity } from './domain/wallet.entity';
-import { WalletModel } from './database/wallet.schema';
+import { WalletMapper } from '../wallet.mapper';
+import { WalletEntity } from '../domain/wallet.entity';
+import { WalletModel } from '../database/wallet.schema';
+import { WalletResponseDto } from '../dtos/wallet.response.dto';
 
 describe('WalletMapper', () => {
   const mapper = new WalletMapper();
@@ -53,8 +54,18 @@ describe('WalletMapper', () => {
   });
 
   describe('toResponse', () => {
-    it('throws not implemented', () => {
-      expect(() => mapper.toResponse()).toThrow('Not implemented');
+    it('maps entity to response DTO with whitelisted properties', () => {
+      const entity = new WalletEntity({
+        id: 'wallet-id',
+        createdAt: new Date('2024-01-01'),
+        updatedAt: new Date('2024-01-02'),
+        props: { userId: 'user-id', balance: 500 },
+      });
+      const response = mapper.toResponse(entity);
+      expect(response).toBeInstanceOf(WalletResponseDto);
+      expect(response.id).toBe('wallet-id');
+      expect(response.userId).toBe('user-id');
+      expect(response.balance).toBe(500);
     });
   });
 

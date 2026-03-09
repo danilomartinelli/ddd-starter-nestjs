@@ -2,20 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { InjectPool } from '@danilomartinelli/nestjs-slonik';
 import { DatabasePool, sql } from 'slonik';
-import { z } from 'zod';
 import { UserCreatedDomainEvent } from '@modules/user/domain/events/user-created.domain-event';
 import { WalletCreatedDomainEvent } from '@modules/wallet/domain/events/wallet-created.domain-event';
-
-const userWalletSummarySchema = z.object({
-  id: z.uuid(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
-  userId: z.string(),
-  email: z.string().nullable(),
-  country: z.string().nullable(),
-  walletId: z.string().nullable(),
-  balance: z.number().int().nullable(),
-});
+import { userWalletSummaryReadSchema } from '../../read-models/user-wallet-summary.read-model';
 
 @Injectable()
 export class UserWalletSummaryProjector {
@@ -26,7 +15,7 @@ export class UserWalletSummaryProjector {
   @OnEvent(UserCreatedDomainEvent.name, { async: true, promisify: true })
   async onUserCreated(event: UserCreatedDomainEvent): Promise<void> {
     this.logger.log(`Projecting user created: ${event.aggregateId}`);
-    await this.pool.query(sql.type(userWalletSummarySchema)`
+    await this.pool.query(sql.type(userWalletSummaryReadSchema)`
       INSERT INTO "user_wallet_summary" ("id", "userId", "email", "country")
       VALUES (${event.aggregateId}, ${event.aggregateId}, ${event.email}, ${event.country})
       ON CONFLICT ("userId") DO UPDATE SET
@@ -41,7 +30,7 @@ export class UserWalletSummaryProjector {
     this.logger.log(
       `Projecting wallet created: ${event.aggregateId} for user ${event.userId}`,
     );
-    await this.pool.query(sql.type(userWalletSummarySchema)`
+    await this.pool.query(sql.type(userWalletSummaryReadSchema)`
       UPDATE "user_wallet_summary" SET
         "walletId" = ${event.aggregateId},
         "balance" = 0,

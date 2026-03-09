@@ -1,4 +1,4 @@
-import { walletSchema } from './wallet.schema';
+import { walletSchema } from '../wallet.schema';
 
 describe('walletSchema (Zod)', () => {
   const validData = {

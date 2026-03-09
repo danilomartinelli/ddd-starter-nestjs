@@ -5,8 +5,8 @@ export class WalletNotEnoughBalanceError extends ExceptionBase {
 
   public readonly code = 'WALLET.NOT_ENOUGH_BALANCE';
 
-  constructor(metadata?: unknown) {
-    super(WalletNotEnoughBalanceError.message, undefined, metadata);
+  constructor(cause?: Error, metadata?: unknown) {
+    super(WalletNotEnoughBalanceError.message, cause, metadata);
   }
 }
 
@@ -15,8 +15,8 @@ export class InsufficientBalanceError extends ExceptionBase {
 
   public readonly code = 'WALLET.INSUFFICIENT_BALANCE';
 
-  constructor(metadata?: unknown) {
-    super(InsufficientBalanceError.message, undefined, metadata);
+  constructor(cause?: Error, metadata?: unknown) {
+    super(InsufficientBalanceError.message, cause, metadata);
   }
 }
 
@@ -25,7 +25,7 @@ export class SameWalletTransferError extends ExceptionBase {
 
   public readonly code = 'WALLET.SAME_WALLET_TRANSFER';
 
-  constructor(metadata?: unknown) {
-    super(SameWalletTransferError.message, undefined, metadata);
+  constructor(cause?: Error, metadata?: unknown) {
+    super(SameWalletTransferError.message, cause, metadata);
   }
 }

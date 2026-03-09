@@ -1,5 +1,5 @@
 import { ArgumentOutOfRangeException } from '@repo/core';
-import { Address } from './address.value-object';
+import { Address } from '../address.value-object';
 
 describe('Address', () => {
   const validProps = {

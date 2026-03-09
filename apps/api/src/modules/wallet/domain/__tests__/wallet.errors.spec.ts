@@ -18,7 +18,21 @@ describe('Wallet Domain Errors', () => {
 
     it('accepts optional metadata', () => {
       const metadata = { walletId: '123' };
-      const error = new WalletNotEnoughBalanceError(metadata);
+      const error = new WalletNotEnoughBalanceError(undefined, metadata);
+      expect(error.metadata).toEqual(metadata);
+    });
+
+    it('accepts optional cause', () => {
+      const cause = new Error('underlying cause');
+      const error = new WalletNotEnoughBalanceError(cause);
+      expect(error.cause).toBe(cause);
+    });
+
+    it('accepts both cause and metadata', () => {
+      const cause = new Error('underlying cause');
+      const metadata = { walletId: '123' };
+      const error = new WalletNotEnoughBalanceError(cause, metadata);
+      expect(error.cause).toBe(cause);
       expect(error.metadata).toEqual(metadata);
     });
   });
@@ -36,7 +50,21 @@ describe('Wallet Domain Errors', () => {
 
     it('accepts optional metadata', () => {
       const metadata = { amount: 500 };
-      const error = new InsufficientBalanceError(metadata);
+      const error = new InsufficientBalanceError(undefined, metadata);
+      expect(error.metadata).toEqual(metadata);
+    });
+
+    it('accepts optional cause', () => {
+      const cause = new Error('underlying cause');
+      const error = new InsufficientBalanceError(cause);
+      expect(error.cause).toBe(cause);
+    });
+
+    it('accepts both cause and metadata', () => {
+      const cause = new Error('underlying cause');
+      const metadata = { walletId: '123' };
+      const error = new InsufficientBalanceError(cause, metadata);
+      expect(error.cause).toBe(cause);
       expect(error.metadata).toEqual(metadata);
     });
   });
@@ -54,7 +82,21 @@ describe('Wallet Domain Errors', () => {
 
     it('accepts optional metadata', () => {
       const metadata = { walletId: 'abc' };
-      const error = new SameWalletTransferError(metadata);
+      const error = new SameWalletTransferError(undefined, metadata);
+      expect(error.metadata).toEqual(metadata);
+    });
+
+    it('accepts optional cause', () => {
+      const cause = new Error('underlying cause');
+      const error = new SameWalletTransferError(cause);
+      expect(error.cause).toBe(cause);
+    });
+
+    it('accepts both cause and metadata', () => {
+      const cause = new Error('underlying cause');
+      const metadata = { walletId: '123' };
+      const error = new SameWalletTransferError(cause, metadata);
+      expect(error.cause).toBe(cause);
       expect(error.metadata).toEqual(metadata);
     });
   });

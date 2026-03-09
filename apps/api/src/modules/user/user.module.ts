@@ -5,7 +5,7 @@ import { DeleteUserHttpController } from './commands/delete-user/delete-user.htt
 import { FindUsersHttpController } from './queries/find-users/find-users.http.controller';
 import { CreateUserMessageController } from './commands/create-user/create-user.message.controller';
 import { CreateUserCliController } from './commands/create-user/create-user.cli.controller';
-import { CreateUserGraphqlResolver } from './commands/create-user/graphql-example/create-user.graphql-resolver';
+import { CreateUserGraphqlResolver } from './commands/create-user/create-user.graphql-resolver';
 import { CreateUserService } from './commands/create-user/create-user.service';
 import { DeleteUserService } from './commands/delete-user/delete-user.service';
 import { FindUsersQueryHandler } from './queries/find-users/find-users.query-handler';

@@ -9,10 +9,8 @@ import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Result } from 'neverthrow';
 import { routesV1 } from '@config/app.routes';
-import {
-  FindUserWalletSummaryQuery,
-  UserWalletSummaryReadModel,
-} from './find-user-wallet-summary.query-handler';
+import { FindUserWalletSummaryQuery } from './find-user-wallet-summary.query-handler';
+import { UserWalletSummaryReadModel } from '../../read-models/user-wallet-summary.read-model';
 
 @Controller(routesV1.version)
 export class FindUserWalletSummaryHttpController {

@@ -1,10 +1,10 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { CommandBus } from '@nestjs/cqrs';
-import { CreateUserCommand } from '../create-user.command';
-import { CreateUserGqlRequestDto } from './dtos/create-user.gql-request.dto';
-import { IdGqlResponse } from './dtos/id.gql-response.dto';
+import { CreateUserCommand } from './create-user.command';
+import { CreateUserGqlRequestDto } from './graphql-dtos/create-user.gql-request.dto';
+import { IdGqlResponse } from './graphql-dtos/id.gql-response.dto';
 import { AggregateID } from '@repo/core';
-import { UserAlreadyExistsError } from '@src/modules/user/domain/user.errors';
+import { UserAlreadyExistsError } from '@modules/user/domain/user.errors';
 import { Result } from 'neverthrow';
 import { Public } from '@src/infrastructure/auth/public.decorator';
 

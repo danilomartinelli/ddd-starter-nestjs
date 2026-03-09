@@ -1,7 +1,7 @@
 import { ArgumentOutOfRangeException } from '@repo/core';
-import { WalletEntity } from './wallet.entity';
-import { WalletCreatedDomainEvent } from './events/wallet-created.domain-event';
-import { WalletNotEnoughBalanceError } from './wallet.errors';
+import { WalletEntity } from '../wallet.entity';
+import { WalletCreatedDomainEvent } from '../events/wallet-created.domain-event';
+import { WalletNotEnoughBalanceError } from '../wallet.errors';
 
 describe('WalletEntity', () => {
   describe('create', () => {
