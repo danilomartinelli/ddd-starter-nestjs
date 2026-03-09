@@ -11,8 +11,11 @@ import { DeleteUserService } from './commands/delete-user/delete-user.service';
 import { FindUsersQueryHandler } from './queries/find-users/find-users.query-handler';
 import { UserMapper } from './user.mapper';
 import { CqrsModule } from '@nestjs/cqrs';
-import { USER_REPOSITORY } from './user.di-tokens';
+import { USER_REPOSITORY, SAGA_REPOSITORY } from './user.di-tokens';
 import { FindUsersGraphqlResolver } from './queries/find-users/find-users.graphql-resolver';
+import { SagaRepository } from './database/saga.repository';
+import { SagaMapper } from './application/sagas/saga.mapper';
+import { UserRegistrationSagaHandler } from './application/sagas/saga-event-handlers';
 
 const httpControllers = [
   CreateUserHttpController,
@@ -33,11 +36,14 @@ const commandHandlers: Provider[] = [CreateUserService, DeleteUserService];
 
 const queryHandlers: Provider[] = [FindUsersQueryHandler];
 
-const mappers: Provider[] = [UserMapper];
+const mappers: Provider[] = [UserMapper, SagaMapper];
 
 const repositories: Provider[] = [
   { provide: USER_REPOSITORY, useClass: UserRepository },
+  { provide: SAGA_REPOSITORY, useClass: SagaRepository },
 ];
+
+const sagaHandlers: Provider[] = [UserRegistrationSagaHandler];
 
 @Module({
   imports: [CqrsModule],
@@ -50,6 +56,7 @@ const repositories: Provider[] = [
     ...commandHandlers,
     ...queryHandlers,
     ...mappers,
+    ...sagaHandlers,
   ],
 })
 export class UserModule {}
