@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { routesV1 } from '@config/app.routes';
 import { CommandBus } from '@nestjs/cqrs';
-import { DeleteUserCommand } from './delete-user.service';
+import { DeleteUserCommand } from './delete-user.command';
 import { Result } from 'neverthrow';
 import { NotFoundException, ApiErrorResponse } from '@repo/core';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';

@@ -1,5 +1,6 @@
 import { defineFeature, loadFeature } from 'jest-cucumber';
-import { DeleteUserCommand, DeleteUserService } from '../delete-user.service';
+import { DeleteUserCommand } from '../delete-user.command';
+import { DeleteUserService } from '../delete-user.service';
 import { NotFoundException } from '@repo/core';
 import { Result } from 'neverthrow';
 import { UserEntity } from '@modules/user/domain/user.entity';

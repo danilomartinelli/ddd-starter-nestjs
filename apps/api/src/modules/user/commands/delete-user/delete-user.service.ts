@@ -4,14 +4,7 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler } from '@nestjs/cqrs';
 import { err, ok, Result } from 'neverthrow';
 import { USER_REPOSITORY } from '../../user.di-tokens';
-
-export class DeleteUserCommand {
-  readonly userId: string;
-
-  constructor(props: DeleteUserCommand) {
-    this.userId = props.userId;
-  }
-}
+import { DeleteUserCommand } from './delete-user.command';
 
 @CommandHandler(DeleteUserCommand)
 export class DeleteUserService {

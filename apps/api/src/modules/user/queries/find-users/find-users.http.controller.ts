@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Query } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Query } from '@nestjs/common';
 import { routesV1 } from '@config/app.routes';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -20,7 +20,7 @@ export class FindUsersHttpController {
     type: UserPaginatedResponseDto,
   })
   async findUsers(
-    @Body() request: FindUsersRequestDto,
+    @Query() request: FindUsersRequestDto,
     @Query() queryParams: PaginatedQueryRequestDto,
   ): Promise<UserPaginatedResponseDto> {
     const query = new FindUsersQuery({
