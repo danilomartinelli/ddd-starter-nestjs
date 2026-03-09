@@ -43,6 +43,7 @@ defineFeature(feature, (test) => {
           postalCode: '28566',
           street: 'Grand Avenue',
         }),
+        passwordHash: '$argon2id$v=19$m=65536,t=3,p=4$dGVzdHNhbHQ$hashedvalue',
       });
       mockRepo.findOneById.mockResolvedValue(user);
     });
@@ -98,6 +99,7 @@ defineFeature(feature, (test) => {
           postalCode: '28566',
           street: 'Grand Avenue',
         }),
+        passwordHash: '$argon2id$v=19$m=65536,t=3,p=4$dGVzdHNhbHQ$hashedvalue',
       });
       mockRepo.findOneById.mockResolvedValue(user);
     });

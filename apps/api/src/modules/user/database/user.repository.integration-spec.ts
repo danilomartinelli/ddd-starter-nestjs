@@ -33,6 +33,7 @@ describe('UserRepository (integration)', () => {
         postalCode: '28566',
         street: 'Grand Avenue',
       }),
+      passwordHash: '$argon2id$v=19$m=65536,t=3,p=4$dGVzdHNhbHQ$hashedvalue',
     });
   }
 

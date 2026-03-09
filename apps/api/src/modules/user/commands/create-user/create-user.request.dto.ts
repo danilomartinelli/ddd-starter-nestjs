@@ -45,4 +45,13 @@ export class CreateUserRequestDto {
   @MinLength(5)
   @Matches(/^[a-zA-Z ]*$/)
   readonly street: string;
+
+  @ApiProperty({
+    example: 'StrongP@ss1',
+    description: 'User password (will be hashed)',
+  })
+  @IsString()
+  @MinLength(8)
+  @MaxLength(128)
+  readonly passwordHash: string;
 }

@@ -26,6 +26,7 @@ export class CreateUserService {
         postalCode: command.postalCode,
         street: command.street,
       }),
+      passwordHash: command.passwordHash,
     });
 
     try {

@@ -2,12 +2,16 @@ import { UserEntity } from '@modules/user/domain/user.entity';
 import { Address } from '@modules/user/domain/value-objects/address.value-object';
 import { UserRoles } from '@modules/user/domain/user.types';
 
+const TEST_PASSWORD_HASH =
+  '$argon2id$v=19$m=65536,t=3,p=4$dGVzdHNhbHQ$hashedvalue';
+
 export class UserBuilder {
   private email = 'test@example.com';
   private country = 'England';
   private postalCode = '28566';
   private street = 'Grand Avenue';
   private role?: UserRoles;
+  private passwordHash = TEST_PASSWORD_HASH;
 
   withEmail(email: string): this {
     this.email = email;
@@ -34,6 +38,11 @@ export class UserBuilder {
     return this;
   }
 
+  withPasswordHash(passwordHash: string): this {
+    this.passwordHash = passwordHash;
+    return this;
+  }
+
   build(): UserEntity {
     const user = UserEntity.create({
       email: this.email,
@@ -42,6 +51,7 @@ export class UserBuilder {
         postalCode: this.postalCode,
         street: this.street,
       }),
+      passwordHash: this.passwordHash,
     });
 
     if (this.role === UserRoles.admin) user.makeAdmin();

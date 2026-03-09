@@ -29,6 +29,7 @@ export class UserMapper implements Mapper<
       postalCode: copy.address.postalCode,
       street: copy.address.street,
       role: copy.role,
+      passwordHash: copy.passwordHash,
     };
     return userSchema.parse(record);
   }
@@ -46,6 +47,7 @@ export class UserMapper implements Mapper<
           postalCode: record.postalCode,
           country: record.country,
         }),
+        passwordHash: record.passwordHash,
       },
     });
     return entity;

@@ -4,6 +4,9 @@ import { Address } from '../domain/value-objects/address.value-object';
 import { UserRoles } from '../domain/user.types';
 import { UserModel } from '../database/user.schema';
 
+const TEST_PASSWORD_HASH =
+  '$argon2id$v=19$m=65536,t=3,p=4$dGVzdHNhbHQ$hashedvalue';
+
 describe('UserMapper', () => {
   const mapper = new UserMapper();
   const validAddress = new Address({
@@ -17,6 +20,7 @@ describe('UserMapper', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       const model = mapper.toPersistence(user);
 
@@ -43,6 +47,7 @@ describe('UserMapper', () => {
         postalCode: '28566',
         street: 'Grand Avenue',
         role: UserRoles.guest,
+        passwordHash: TEST_PASSWORD_HASH,
       };
 
       const entity = mapper.toDomain(model);
@@ -67,6 +72,7 @@ describe('UserMapper', () => {
         postalCode: '28566',
         street: 'Grand Avenue',
         role: UserRoles.guest,
+        passwordHash: TEST_PASSWORD_HASH,
       };
 
       const entity = mapper.toDomain(model);
@@ -79,6 +85,7 @@ describe('UserMapper', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       const response = mapper.toResponse(user);
 
@@ -95,6 +102,7 @@ describe('UserMapper', () => {
       const original = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       const model = mapper.toPersistence(original);
       const restored = mapper.toDomain(model);

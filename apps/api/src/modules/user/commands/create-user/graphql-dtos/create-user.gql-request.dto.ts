@@ -35,4 +35,10 @@ export class CreateUserGqlRequestDto {
   @Matches(/^[a-zA-Z ]*$/)
   @Field()
   readonly street: string;
+
+  @IsString()
+  @MinLength(8)
+  @MaxLength(128)
+  @Field()
+  readonly passwordHash: string;
 }

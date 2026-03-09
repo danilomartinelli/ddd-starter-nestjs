@@ -15,6 +15,7 @@ export const userSchema = z.object({
   postalCode: z.string().min(1).max(20),
   street: z.string().min(1).max(255),
   role: z.enum(UserRoles),
+  passwordHash: z.string(),
 });
 
 export type UserModel = z.infer<typeof userSchema>;

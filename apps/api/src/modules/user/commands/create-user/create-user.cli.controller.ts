@@ -11,6 +11,7 @@ interface CreateUserCliOptions {
   country: string;
   postalCode: string;
   street: string;
+  passwordHash: string;
 }
 
 @Command({
@@ -76,6 +77,15 @@ export class CreateUserCliController extends CommandRunner {
     required: true,
   })
   parseStreet(val: string): string {
+    return val;
+  }
+
+  @Option({
+    flags: '--password-hash <passwordHash>',
+    description: 'Pre-hashed password',
+    required: true,
+  })
+  parsePasswordHash(val: string): string {
     return val;
   }
 }

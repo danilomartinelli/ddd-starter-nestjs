@@ -6,6 +6,9 @@ import { UserDeletedDomainEvent } from '../events/user-deleted.domain-event';
 import { UserRoleChangedDomainEvent } from '../events/user-role-changed.domain-event';
 import { UserAddressUpdatedDomainEvent } from '../events/user-address-updated.domain-event';
 
+const TEST_PASSWORD_HASH =
+  '$argon2id$v=19$m=65536,t=3,p=4$dGVzdHNhbHQ$hashedvalue';
+
 describe('UserEntity', () => {
   const validAddress = new Address({
     country: 'England',
@@ -18,6 +21,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       expect(user.role).toBe(UserRoles.guest);
     });
@@ -26,6 +30,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       expect(user.id).toBeDefined();
       expect(typeof user.id).toBe('string');
@@ -36,6 +41,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       const props = user.getProps();
       expect(props.email).toBe('test@example.com');
@@ -46,6 +52,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       expect(user.domainEvents).toHaveLength(1);
       expect(user.domainEvents[0]).toBeInstanceOf(UserCreatedDomainEvent);
@@ -62,6 +69,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       expect(user.createdAt).toBeInstanceOf(Date);
       expect(user.updatedAt).toBeInstanceOf(Date);
@@ -73,6 +81,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       user.clearEvents();
       user.makeAdmin();
@@ -90,6 +99,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       user.clearEvents();
       user.makeModerator();
@@ -104,6 +114,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       user.clearEvents();
       user.makeModerator();
@@ -119,6 +130,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       user.clearEvents();
       user.delete();
@@ -134,6 +146,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       user.clearEvents();
       user.updateAddress({
@@ -159,6 +172,7 @@ describe('UserEntity', () => {
       const user = UserEntity.create({
         email: 'test@example.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       user.updateAddress({
         country: 'France',
@@ -177,6 +191,7 @@ describe('UserEntity', () => {
       const user1 = UserEntity.create({
         email: 'a@test.com',
         address: validAddress,
+        passwordHash: TEST_PASSWORD_HASH,
       });
       const user2 = new (UserEntity as any)({
         id: user1.id,
@@ -184,6 +199,7 @@ describe('UserEntity', () => {
           email: 'b@test.com',
           role: UserRoles.admin,
           address: validAddress,
+          passwordHash: TEST_PASSWORD_HASH,
         },
       });
       expect(user1.equals(user2)).toBe(true);
