@@ -11,7 +11,25 @@ import { SecurityModule, LoggingModule, HealthModule } from '@repo/infra';
 import { postgresConnectionUri } from './configs/database.config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloArmor } from '@escape.tech/graphql-armor';
 import { get } from 'env-var';
+
+const armor = new ApolloArmor({
+  maxDepth: {
+    n: parseInt(process.env.GQL_MAX_DEPTH || '10', 10),
+  },
+  costLimit: {
+    maxCost: parseInt(process.env.GQL_MAX_COMPLEXITY || '1000', 10),
+  },
+  maxAliases: {
+    n: parseInt(process.env.GQL_MAX_ALIASES || '15', 10),
+  },
+  blockFieldSuggestion: {
+    enabled: true,
+  },
+});
+
+const protection = armor.protect();
 
 const interceptors = [
   {
@@ -48,6 +66,8 @@ const interceptors = [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      plugins: [...protection.plugins],
+      validationRules: [...protection.validationRules],
     }),
 
     // Modules
