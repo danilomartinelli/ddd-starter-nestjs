@@ -1,14 +1,19 @@
+import { UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { Result } from 'neverthrow';
 import { ResponseBase, Paginated, PaginatedParams } from '@repo/core';
-import { UserModel } from '../../database/user.repository';
+import { UserModel } from '../../database/user.schema';
 import { UserPaginatedGraphqlResponseDto } from '../../dtos/graphql/user.paginated-gql-response.dto';
 import { FindUsersQuery } from './find-users.query-handler';
+import { GqlAuthGuard } from '@src/infrastructure/auth/gql-auth.guard';
+import { Public } from '@src/infrastructure/auth/public.decorator';
 
+@UseGuards(GqlAuthGuard)
 @Resolver()
 export class FindUsersGraphqlResolver {
   constructor(private readonly queryBus: QueryBus) {}
+  @Public()
   @Query(() => UserPaginatedGraphqlResponseDto)
   async findUsers(
     @Args('options', { type: () => String })

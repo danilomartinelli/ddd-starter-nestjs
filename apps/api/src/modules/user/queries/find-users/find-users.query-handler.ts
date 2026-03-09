@@ -3,7 +3,7 @@ import { ok, Result } from 'neverthrow';
 import { PaginatedParams, PaginatedQueryBase, Paginated } from '@repo/core';
 import { InjectPool } from '@danilomartinelli/nestjs-slonik';
 import { DatabasePool, sql } from 'slonik';
-import { UserModel, userSchema } from '../../database/user.repository';
+import { UserModel, userSchema } from '../../database/user.schema';
 
 export class FindUsersQuery extends PaginatedQueryBase {
   readonly country?: string;

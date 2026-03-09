@@ -2,7 +2,7 @@ import { UserMapper } from './user.mapper';
 import { UserEntity } from './domain/user.entity';
 import { Address } from './domain/value-objects/address.value-object';
 import { UserRoles } from './domain/user.types';
-import { UserModel } from './database/user.repository';
+import { UserModel } from './database/user.schema';
 
 describe('UserMapper', () => {
   const mapper = new UserMapper();

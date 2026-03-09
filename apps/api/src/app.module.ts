@@ -8,10 +8,33 @@ import { RequestContextModule } from 'nestjs-request-context';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ContextInterceptor, ExceptionInterceptor } from '@repo/core';
 import { SecurityModule, LoggingModule, HealthModule } from '@repo/infra';
+import { AuthModule } from '@src/infrastructure/auth/auth.module';
 import { postgresConnectionUri } from './configs/database.config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloArmor } from '@escape.tech/graphql-armor';
+import {
+  formatGraphqlError,
+  createGraphqlErrorFormatterPlugin,
+} from '@src/infrastructure/graphql/graphql-error-formatter.plugin';
 import { get } from 'env-var';
+
+const armor = new ApolloArmor({
+  maxDepth: {
+    n: parseInt(process.env.GQL_MAX_DEPTH || '10', 10),
+  },
+  costLimit: {
+    maxCost: parseInt(process.env.GQL_MAX_COMPLEXITY || '1000', 10),
+  },
+  maxAliases: {
+    n: parseInt(process.env.GQL_MAX_ALIASES || '15', 10),
+  },
+  blockFieldSuggestion: {
+    enabled: true,
+  },
+});
+
+const protection = armor.protect();
 
 const interceptors = [
   {
@@ -48,7 +71,13 @@ const interceptors = [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      formatError: formatGraphqlError,
+      plugins: [...protection.plugins, createGraphqlErrorFormatterPlugin()],
+      validationRules: [...protection.validationRules],
     }),
+
+    // Auth
+    AuthModule,
 
     // Modules
     UserModule,

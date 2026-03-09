@@ -1,6 +1,6 @@
 import { WalletMapper } from './wallet.mapper';
 import { WalletEntity } from './domain/wallet.entity';
-import { WalletModel } from './database/wallet.repository';
+import { WalletModel } from './database/wallet.schema';
 
 describe('WalletMapper', () => {
   const mapper = new WalletMapper();

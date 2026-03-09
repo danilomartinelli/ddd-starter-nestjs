@@ -1,5 +1,5 @@
 import { Mapper } from '@repo/core';
-import { UserModel, userSchema } from './database/user.repository';
+import { UserModel, userSchema } from './database/user.schema';
 import { Address } from './domain/value-objects/address.value-object';
 import { UserEntity } from './domain/user.entity';
 import { UserResponseDto } from './dtos/user.response.dto';

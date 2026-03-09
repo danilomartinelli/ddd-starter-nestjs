@@ -1,7 +1,7 @@
 import { Mapper } from '@repo/core';
 import { Injectable } from '@nestjs/common';
 import { WalletEntity } from './domain/wallet.entity';
-import { WalletModel, walletSchema } from './database/wallet.repository';
+import { WalletModel, walletSchema } from './database/wallet.schema';
 
 @Injectable()
 export class WalletMapper implements Mapper<WalletEntity, WalletModel> {

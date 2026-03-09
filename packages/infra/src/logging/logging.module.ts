@@ -1,6 +1,7 @@
 import { DynamicModule, Module } from "@nestjs/common";
 import { LoggerModule } from "nestjs-pino";
 import { randomUUID } from "node:crypto";
+import { trace, context } from "@opentelemetry/api";
 import { LoggingOptions } from "./logging.types";
 
 @Module({})
@@ -16,6 +17,15 @@ export class LoggingModule {
             transport: options?.prettyPrint
               ? { target: "pino-pretty", options: { colorize: true } }
               : undefined,
+            mixin() {
+              const span = trace.getSpan(context.active());
+              if (!span) return {};
+              const spanContext = span.spanContext();
+              return {
+                traceId: spanContext.traceId,
+                spanId: spanContext.spanId,
+              };
+            },
           },
         }),
       ],

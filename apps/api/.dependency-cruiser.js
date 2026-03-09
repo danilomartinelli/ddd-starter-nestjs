@@ -91,17 +91,38 @@ module.exports = {
     },
 
     /* rules from the 'recommended' preset: */
-    // {
-    //   name: 'no-circular',
-    //   severity: 'warn',
-    //   comment:
-    //     'This dependency is part of a circular relationship. You might want to revise ' +
-    //     'your solution (i.e. use dependency inversion, make sure the modules have a single responsibility) ',
-    //   from: {},
-    //   to: {
-    //     circular: true,
-    //   },
-    // },
+    {
+      name: 'no-circular',
+      severity: 'error',
+      comment:
+        'Circular dependencies lead to hard-to-maintain code. Break cycles by introducing interfaces or events.',
+      from: {
+        pathNot: ['packages/core'],
+      },
+      to: {
+        circular: true,
+      },
+    },
+    {
+      name: 'no-cross-module-imports-except-events',
+      severity: 'error',
+      comment:
+        'Modules must communicate only via domain events. Direct imports between modules are forbidden except for domain event classes.',
+      from: {
+        path: 'src/modules/([^/]+)/',
+        pathNot: [
+          'src/modules/([^/]+)/.*\\.module\\.ts$',
+          '\\.(spec|test|e2e-spec|integration-spec)\\.(ts|js)$',
+        ],
+      },
+      to: {
+        path: 'src/modules/([^/]+)/',
+        pathNot: [
+          'src/modules/$1/',
+          'src/modules/[^/]+/domain/events/.*\\.domain-event\\.ts$',
+        ],
+      },
+    },
     {
       name: 'no-orphans',
       comment:

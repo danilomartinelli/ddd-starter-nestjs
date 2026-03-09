@@ -1,4 +1,4 @@
-import { userSchema } from '../database/user.repository';
+import { userSchema } from './user.schema';
 
 describe('userSchema (Zod)', () => {
   const validData = {

@@ -7,7 +7,7 @@ import { FindUsersRequestDto } from './find-users.request.dto';
 import { FindUsersQuery } from './find-users.query-handler';
 import { Paginated, PaginatedQueryRequestDto, ResponseBase } from '@repo/core';
 import { UserPaginatedResponseDto } from '../../dtos/user.paginated.response.dto';
-import { UserModel } from '../../database/user.repository';
+import { UserModel } from '../../database/user.schema';
 
 @Controller(routesV1.version)
 export class FindUsersHttpController {
