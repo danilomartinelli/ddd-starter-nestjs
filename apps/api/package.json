@@ -24,7 +24,9 @@
     "seed:up": "ts-node database/seed",
     "depcruise": "depcruise",
     "deps:validate": "depcruise src --config .dependency-cruiser.js --output-type err-long",
-    "deps:graph": "depcruise src --include-only \"^src\" --config --output-type dot | dot -T svg > assets/dependency-graph.svg"
+    "deps:graph": "depcruise src --include-only \"^src\" --config --output-type dot | dot -T svg > assets/dependency-graph.svg",
+    "docker:observability": "docker compose -f docker/docker-compose.observability.yml up -d",
+    "docker:observability:down": "docker compose -f docker/docker-compose.observability.yml down"
   },
   "dependencies": {
     "@apollo/server": "^5",
