@@ -94,26 +94,26 @@ Takes the project from "good reference" to "production-grade template" and deepe
 
 ### Observability
 
-- [ ] **OpenTelemetry** basic setup (traces + metrics)
-- [ ] Request tracing with correlation IDs across services
-- [ ] Database query performance logging
-- [ ] GraphQL operation metrics
+- [x] **OpenTelemetry** basic setup (traces + metrics)
+- [x] Request tracing with correlation IDs across services
+- [x] Database query performance logging
+- [x] GraphQL operation metrics
 
 ### GraphQL Hardening
 
-- [ ] Query complexity analysis and depth limiting
-- [ ] Authentication/authorization guards on resolvers
-- [ ] Proper error formatting (not raw exceptions)
-- [ ] Batch query prevention
+- [x] Query complexity analysis and depth limiting
+- [x] Authentication/authorization guards on resolvers
+- [x] Proper error formatting (not raw exceptions)
+- [x] Batch query prevention
 
 ### Architecture Enforcement
 
-- [ ] Enable circular dependency detection in dependency-cruiser
-- [ ] Cross-module import prevention (communicate only via domain events or public interfaces)
-- [ ] Document module boundaries in README
+- [x] Enable circular dependency detection in dependency-cruiser
+- [x] Cross-module import prevention (communicate only via domain events or public interfaces)
+- [x] Document module boundaries in README
 
 ### Advanced DDD Patterns (Examples)
 
-- [ ] **Saga / Process Manager** — multi-aggregate workflow (e.g., user registration → wallet creation → welcome email)
-- [ ] **Read Model / Projection** — CQRS read-side with denormalized query table
-- [ ] **Domain Service** — cross-entity business logic that doesn't belong in a single aggregate
+- [x] **Saga / Process Manager** — multi-aggregate workflow (e.g., user registration → wallet creation → welcome email)
+- [x] **Read Model / Projection** — CQRS read-side with denormalized query table
+- [x] **Domain Service** — cross-entity business logic that doesn't belong in a single aggregate
