@@ -13,6 +13,10 @@ import { postgresConnectionUri } from './configs/database.config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloArmor } from '@escape.tech/graphql-armor';
+import {
+  formatGraphqlError,
+  createGraphqlErrorFormatterPlugin,
+} from '@src/infrastructure/graphql/graphql-error-formatter.plugin';
 import { get } from 'env-var';
 
 const armor = new ApolloArmor({
@@ -67,7 +71,8 @@ const interceptors = [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
-      plugins: [...protection.plugins],
+      formatError: formatGraphqlError,
+      plugins: [...protection.plugins, createGraphqlErrorFormatterPlugin()],
       validationRules: [...protection.validationRules],
     }),
 
