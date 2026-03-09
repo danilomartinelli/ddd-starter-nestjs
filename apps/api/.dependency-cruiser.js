@@ -104,6 +104,26 @@ module.exports = {
       },
     },
     {
+      name: 'no-cross-module-imports-except-events',
+      severity: 'error',
+      comment:
+        'Modules must communicate only via domain events. Direct imports between modules are forbidden except for domain event classes.',
+      from: {
+        path: 'src/modules/([^/]+)/',
+        pathNot: [
+          'src/modules/([^/]+)/.*\\.module\\.ts$',
+          '\\.(spec|test|e2e-spec|integration-spec)\\.(ts|js)$',
+        ],
+      },
+      to: {
+        path: 'src/modules/([^/]+)/',
+        pathNot: [
+          'src/modules/$1/',
+          'src/modules/[^/]+/domain/events/.*\\.domain-event\\.ts$',
+        ],
+      },
+    },
+    {
       name: 'no-orphans',
       comment:
         "This is an orphan module - it's likely not used (anymore?). Either use it or " +
