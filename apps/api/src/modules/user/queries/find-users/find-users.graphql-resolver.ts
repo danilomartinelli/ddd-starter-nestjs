@@ -3,7 +3,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { Result } from 'neverthrow';
 import { ResponseBase, Paginated, PaginatedParams } from '@repo/core';
-import { UserModel } from '../../database/user.repository';
+import { UserModel } from '../../database/user.schema';
 import { UserPaginatedGraphqlResponseDto } from '../../dtos/graphql/user.paginated-gql-response.dto';
 import { FindUsersQuery } from './find-users.query-handler';
 import { GqlAuthGuard } from '@src/infrastructure/auth/gql-auth.guard';
