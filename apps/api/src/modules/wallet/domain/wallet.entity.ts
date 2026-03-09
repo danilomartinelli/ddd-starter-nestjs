@@ -5,6 +5,7 @@ import {
 } from '@repo/core';
 import { err, ok, Result } from 'neverthrow';
 import { WalletCreatedDomainEvent } from './events/wallet-created.domain-event';
+import { FundsTransferredDomainEvent } from './events/funds-transferred.domain-event';
 import { WalletNotEnoughBalanceError } from './wallet.errors';
 import { randomUUID } from 'node:crypto';
 
@@ -41,6 +42,17 @@ export class WalletEntity extends AggregateRoot<WalletProps> {
     }
     this.props.balance -= amount;
     return ok(null);
+  }
+
+  recordTransfer(targetWalletId: string, amount: number): void {
+    this.addEvent(
+      new FundsTransferredDomainEvent({
+        aggregateId: this.id,
+        sourceWalletId: this.id,
+        targetWalletId,
+        amount,
+      }),
+    );
   }
 
   /**
