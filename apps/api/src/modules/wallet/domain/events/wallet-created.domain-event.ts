@@ -5,5 +5,6 @@ export class WalletCreatedDomainEvent extends DomainEvent {
 
   constructor(props: DomainEventProps<WalletCreatedDomainEvent>) {
     super(props);
+    this.userId = props.userId;
   }
 }

@@ -16,6 +16,7 @@ import { FindUsersGraphqlResolver } from './queries/find-users/find-users.graphq
 import { SagaRepository } from './database/saga.repository';
 import { SagaMapper } from './application/sagas/saga.mapper';
 import { UserRegistrationSagaHandler } from './application/sagas/saga-event-handlers';
+import { UserWalletSummaryProjector } from './application/projections/user-wallet-summary.projector';
 
 const httpControllers = [
   CreateUserHttpController,
@@ -45,6 +46,8 @@ const repositories: Provider[] = [
 
 const sagaHandlers: Provider[] = [UserRegistrationSagaHandler];
 
+const projectors: Provider[] = [UserWalletSummaryProjector];
+
 @Module({
   imports: [CqrsModule],
   controllers: [...httpControllers, ...messageControllers],
@@ -57,6 +60,7 @@ const sagaHandlers: Provider[] = [UserRegistrationSagaHandler];
     ...queryHandlers,
     ...mappers,
     ...sagaHandlers,
+    ...projectors,
   ],
 })
 export class UserModule {}
