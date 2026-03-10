@@ -5,3 +5,4 @@ export * from "./idempotency";
 export * from "./circuit-breaker";
 export * from "./dead-letter";
 export * from "./queue";
+export * from "./scheduler";
