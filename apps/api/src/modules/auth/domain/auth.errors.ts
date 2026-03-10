@@ -10,16 +10,6 @@ export class InvalidCredentialsError extends ExceptionBase {
   }
 }
 
-export class TokenExpiredError extends ExceptionBase {
-  static readonly message = 'Token has expired';
-
-  public readonly code = 'AUTH.TOKEN_EXPIRED';
-
-  constructor(cause?: Error, metadata?: unknown) {
-    super(TokenExpiredError.message, cause, metadata);
-  }
-}
-
 export class TokenInvalidError extends ExceptionBase {
   static readonly message = 'Token is invalid';
 
