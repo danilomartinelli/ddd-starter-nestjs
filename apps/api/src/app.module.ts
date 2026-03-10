@@ -19,6 +19,7 @@ import {
   SchedulerModule,
   OutboxModule,
   EventBusModule,
+  CacheModule,
 } from '@repo/infra';
 import { AuthModule } from '@src/infrastructure/auth/auth.module';
 import { GqlAuthGuard } from '@src/infrastructure/auth/gql-auth.guard';
@@ -103,6 +104,14 @@ const guards = [
     SchedulerModule.forRoot(),
     OutboxModule.forRoot(),
     EventBusModule.forRoot(),
+    CacheModule.forRoot({
+      driver: get('CACHE_DRIVER').default('memory').asString() as
+        | 'memory'
+        | 'redis',
+      defaultTtlSeconds: get('CACHE_DEFAULT_TTL').default(300).asIntPositive(),
+      redisHost: get('REDIS_HOST').default('localhost').asString(),
+      redisPort: get('REDIS_PORT').default(6379).asIntPositive(),
+    }),
     CqrsModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

@@ -8,3 +8,4 @@ export * from "./queue";
 export * from "./scheduler";
 export * from "./outbox";
 export * from "./event-bus";
+export * from "./cache";
