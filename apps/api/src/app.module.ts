@@ -22,6 +22,9 @@ import {
   CacheModule,
   FeatureFlagModule,
   AuditModule,
+  WebhookModule,
+  StorageModule,
+  NotificationModule,
 } from '@repo/infra';
 import { AuthModule } from '@src/infrastructure/auth/auth.module';
 import { GqlAuthGuard } from '@src/infrastructure/auth/gql-auth.guard';
@@ -116,6 +119,24 @@ const guards = [
     }),
     FeatureFlagModule.forRoot(),
     AuditModule.forRoot(),
+    WebhookModule.forRoot({
+      maxRetries: 3,
+      retryDelayMs: 5000,
+      timeoutMs: 10000,
+    }),
+    StorageModule.forRoot({
+      driver: get('STORAGE_DRIVER').default('local').asString() as
+        | 'local'
+        | 's3',
+      localPath: get('STORAGE_LOCAL_PATH').default('./uploads').asString(),
+      s3Bucket: get('STORAGE_S3_BUCKET').default('').asString() || undefined,
+      s3Region: get('STORAGE_S3_REGION').default('').asString() || undefined,
+    }),
+    NotificationModule.forRoot({
+      driver: get('NOTIFICATION_DRIVER').default('console').asString() as
+        | 'console'
+        | 'email',
+    }),
     CqrsModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
