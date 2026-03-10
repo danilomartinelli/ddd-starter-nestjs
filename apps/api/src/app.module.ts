@@ -15,6 +15,10 @@ import {
   IdempotencyModule,
   CircuitBreakerModule,
   DeadLetterModule,
+  QueueModule,
+  SchedulerModule,
+  OutboxModule,
+  EventBusModule,
 } from '@repo/infra';
 import { AuthModule } from '@src/infrastructure/auth/auth.module';
 import { GqlAuthGuard } from '@src/infrastructure/auth/gql-auth.guard';
@@ -91,6 +95,14 @@ const guards = [
     IdempotencyModule.forRoot(),
     CircuitBreakerModule.forRoot(),
     DeadLetterModule.forRoot(),
+    QueueModule.forRoot({
+      redisHost: get('REDIS_HOST').default('localhost').asString(),
+      redisPort: get('REDIS_PORT').default(6379).asIntPositive(),
+      redisPassword: get('REDIS_PASSWORD').default('').asString(),
+    }),
+    SchedulerModule.forRoot(),
+    OutboxModule.forRoot(),
+    EventBusModule.forRoot(),
     CqrsModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
