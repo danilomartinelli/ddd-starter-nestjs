@@ -64,6 +64,7 @@ export class WebhookRepository {
     attempts: number,
     nextRetryAt: Date | null,
   ): Promise<void> {
+    // Write-only: no return validation needed
     await this.pool.query(
       sql.unsafe`
         UPDATE "webhook_deliveries"

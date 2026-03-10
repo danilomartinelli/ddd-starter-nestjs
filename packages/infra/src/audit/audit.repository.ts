@@ -18,6 +18,7 @@ export class AuditRepository {
     metadata?: unknown;
   }): Promise<void> {
     try {
+      // Write-only: no return validation needed
       await this.pool.query(
         sql.unsafe`
           INSERT INTO "audit_logs" ("id", "userId", "action", "entityType", "entityId", "changes", "metadata")

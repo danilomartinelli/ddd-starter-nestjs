@@ -14,6 +14,7 @@ export class OutboxRepository {
     eventName: string,
     payload: unknown,
   ): Promise<void> {
+    // Write-only: no return validation needed
     await this.pool.query(
       sql.unsafe`
         INSERT INTO "outbox" ("id", "eventName", "payload")
@@ -41,6 +42,7 @@ export class OutboxRepository {
       return;
     }
 
+    // Write-only: no return validation needed
     await this.pool.query(
       sql.unsafe`
         UPDATE "outbox"

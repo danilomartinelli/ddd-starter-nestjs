@@ -12,6 +12,7 @@ export class DeadLetterRepository {
   async insert(
     record: Omit<FailedEventModel, "createdAt" | "updatedAt">,
   ): Promise<void> {
+    // Write-only: no return validation needed
     await this.pool.query(
       sql.unsafe`
         INSERT INTO "failed_events" (
@@ -52,6 +53,7 @@ export class DeadLetterRepository {
     attempts: number,
     nextRetryAt: Date | null,
   ): Promise<void> {
+    // Write-only: no return validation needed
     await this.pool.query(
       sql.unsafe`
         UPDATE "failed_events"
@@ -66,6 +68,7 @@ export class DeadLetterRepository {
   }
 
   async markResolved(id: string): Promise<void> {
+    // Write-only: no return validation needed
     await this.pool.query(
       sql.unsafe`
         UPDATE "failed_events"

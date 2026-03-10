@@ -40,6 +40,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryPort {
   }
 
   async revokeByUserId(userId: string): Promise<void> {
+    // Write-only: no return validation needed
     await this.pool.query(sql.unsafe`
       UPDATE "refresh_tokens"
       SET "revokedAt" = NOW()
@@ -49,6 +50,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryPort {
   }
 
   async revokeByTokenHash(tokenHash: string): Promise<void> {
+    // Write-only: no return validation needed
     await this.pool.query(sql.unsafe`
       UPDATE "refresh_tokens"
       SET "revokedAt" = NOW()
@@ -57,6 +59,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryPort {
   }
 
   async deleteExpired(): Promise<number> {
+    // Write-only: no return validation needed
     const result = await this.pool.query(sql.unsafe`
       DELETE FROM "refresh_tokens"
       WHERE "expiresAt" < NOW()

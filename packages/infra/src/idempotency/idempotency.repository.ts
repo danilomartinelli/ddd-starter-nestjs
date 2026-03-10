@@ -35,6 +35,7 @@ export class IdempotencyRepository {
         ? sql.jsonb(record.responseBody as any)
         : null;
 
+    // Write-only: no return validation needed
     await this.pool.query(
       sql.unsafe`
         INSERT INTO "idempotency_keys" (key, "responseStatus", "responseBody", "createdAt", "expiresAt")
@@ -54,6 +55,7 @@ export class IdempotencyRepository {
   }
 
   async deleteExpired(): Promise<void> {
+    // Write-only: no return validation needed
     const result = await this.pool.query(
       sql.unsafe`
         DELETE FROM "idempotency_keys"
