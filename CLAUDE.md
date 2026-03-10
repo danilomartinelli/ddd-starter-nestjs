@@ -46,6 +46,7 @@ pnpm deps:validate        # Check layer dependency rules via dependency-cruiser
 ```
 apps/api/          # NestJS application (REST + GraphQL + CLI via nest-commander)
 packages/core/     # Shared DDD building blocks (@repo/core)
+packages/infra/    # Infrastructure modules (@repo/infra)
 packages/nestjs-slonik/  # NestJS Slonik PostgreSQL module (@danilomartinelli/nestjs-slonik)
 ```
 
@@ -56,6 +57,7 @@ packages/nestjs-slonik/  # NestJS Slonik PostgreSQL module (@danilomartinelli/ne
 - `@config/*` → `src/configs/*`
 - `@tests/*` → `tests/*`
 - `@repo/core` → `packages/core`
+- `@repo/infra` → `packages/infra`
 
 ## Architecture
 
@@ -108,10 +110,68 @@ modules/<name>/
 - **Repositories** implement port interfaces; injected via DI tokens (`@Inject(USER_REPOSITORY)`)
 - **Database** uses Slonik (PostgreSQL) with Zod schemas for runtime validation of persistence models
 - **Cross-module communication** via domain events (e.g., Wallet module listens to `UserCreatedDomainEvent`)
+- **Authentication** via JWT (Passport.js) with access/refresh token rotation, argon2 password hashing
+- **Soft deletes** supported via `deletedAt` column and `SoftDeletableProps` in `@repo/core`
+- **Feature flags** stored in database, checked via `FeatureFlagService.isEnabled()`
+- **Audit logging** via `AuditInterceptor` — automatically records mutations
+- **Webhooks** dispatched with HMAC-SHA256 signatures and delivery tracking
 
 ### `@repo/core` Package
 
-Provides base classes: `AggregateRoot`, `Entity`, `ValueObject`, `DomainEvent`, `Command`, `Query`, `SqlRepositoryBase`, `Guard`, `ResponseBase`, `PaginatedResponseDto`, `ExceptionInterceptor`, `ContextInterceptor`, `RequestContextService`.
+Provides base classes: `AggregateRoot`, `Entity`, `ValueObject`, `DomainEvent`, `Command`, `Query`, `SqlRepositoryBase`, `Guard`, `ResponseBase`, `PaginatedResponseDto`, `ExceptionInterceptor`, `ContextInterceptor`, `RequestContextService`, `CursorPaginatedQueryBase`, `CursorPaginatedResponseDto`, `@Retryable()` decorator, soft-delete support via `SoftDeletableProps`.
+
+### `@repo/infra` Package
+
+Reusable infrastructure modules, each using `DynamicModule` with `static forRoot(options?)`:
+
+| Module                 | Purpose                                                |
+| ---------------------- | ------------------------------------------------------ |
+| `SecurityModule`       | Helmet, CORS, throttling, input sanitization           |
+| `LoggingModule`        | Structured logging via pino                            |
+| `HealthModule`         | Health checks (DB, app version)                        |
+| `IdempotencyModule`    | Idempotency key interceptor                            |
+| `CircuitBreakerModule` | Circuit breaker pattern (opossum)                      |
+| `DeadLetterModule`     | Failed event recording and retry                       |
+| `QueueModule`          | BullMQ job queues (Redis-backed)                       |
+| `SchedulerModule`      | Cron-based task scheduling                             |
+| `OutboxModule`         | Transactional outbox for reliable event publishing     |
+| `EventBusModule`       | In-process event bus abstraction                       |
+| `CacheModule`          | Memory/Redis caching, `@Cacheable()` decorator         |
+| `FeatureFlagModule`    | Database-backed feature flags                          |
+| `AuditModule`          | Audit trail interceptor for mutations                  |
+| `WebhookModule`        | Webhook subscriptions, HMAC signing, delivery tracking |
+| `StorageModule`        | File storage abstraction (local/S3)                    |
+| `NotificationModule`   | Notification abstraction (console/email)               |
+
+### Domain Modules
+
+| Module   | Purpose                                            |
+| -------- | -------------------------------------------------- |
+| `user`   | User CRUD, address management, saga orchestration  |
+| `wallet` | Wallet creation (via domain event), fund transfers |
+| `auth`   | Registration, login, JWT refresh token rotation    |
+
+### Environment Variables
+
+See `apps/api/.env.example` for all variables. Key groups:
+
+- `DB_*` — PostgreSQL connection
+- `REDIS_*` — Redis for queues and caching
+- `JWT_*` — JWT secret and token expiration
+- `CACHE_*` — Cache driver (memory/redis) and TTL
+- `STORAGE_*` — File storage driver (local/s3) and paths
+- `NOTIFICATION_*` — Notification driver (console/email)
+- `GQL_*` — GraphQL security limits (depth, complexity, aliases)
+- `THROTTLE_*`, `LOG_*`, `CORS_*` — Security and logging
+
+### Seed Data
+
+```bash
+cd apps/api
+pnpm seed:up              # Seeds users (with hashed passwords) and wallets
+```
+
+The seed script (`database/seed.ts`) is idempotent and uses argon2 for password hashing.
 
 ## Code Style
 
